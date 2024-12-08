@@ -83,10 +83,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics, new Rotation2d(),
         new SwerveModulePosition[] {
-          frontLeft.getPosition(),
-          frontRight.getPosition(),
-          backLeft.getPosition(),
-          backRight.getPosition()
+            frontLeft.getPosition(),
+            frontRight.getPosition(),  
+            backLeft.getPosition(),
+            backRight.getPosition()
         }, new Pose2d()
     );
 
@@ -181,6 +181,8 @@ public class SwerveSubsystem extends SubsystemBase {
         return DriveConstants.kDriveKinematics.toChassisSpeeds(frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState());
     }
 
+
+
     @Override
     public void periodic() {
         // SmartDashboard.putNumber("FL", Math.toDegrees(frontLeft.getAbsoluteEncoderRad()));
@@ -188,10 +190,10 @@ public class SwerveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("BL", Math.toDegrees(backLeft.getAbsoluteEncoderRad()));
         // SmartDashboard.putNumber("BR", Math.toDegrees(backRight.getAbsoluteEncoderRad()));
 
-        SmartDashboard.putNumber("T FL", Math.toDegrees(frontLeft.getTurningPosition()%360));
-        SmartDashboard.putNumber("T FR", Math.toDegrees(frontRight.getTurningPosition()%360));
-        SmartDashboard.putNumber("T BL", Math.toDegrees(backLeft.getTurningPosition()%360));
-        SmartDashboard.putNumber("T BR", Math.toDegrees(backRight.getTurningPosition()%360));
+        SmartDashboard.putNumber("T FL", Math.toDegrees(frontLeft.getTurningPosition())%360);
+        SmartDashboard.putNumber("T FR", Math.toDegrees(frontRight.getTurningPosition())%360);
+        SmartDashboard.putNumber("T BL", Math.toDegrees(backLeft.getTurningPosition())%360);
+        SmartDashboard.putNumber("T BR", Math.toDegrees(backRight.getTurningPosition())%360);
         SmartDashboard.putNumber("YAW", gyro.getYaw());
 
         // if(RobotContainer.gameState!=GameConstants.TeleOp){

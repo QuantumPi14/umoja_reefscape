@@ -54,6 +54,8 @@ public class SwerveModule {
         // driveMotor.setSmartCurrentLimit(30);
         // turnMotor.setSmartCurrentLimit(20);
 
+
+        // driveMotor.set
         // driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         // driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
         // turnEncoder.setPositionConversionFactor(ModuleConstants.kTurnEncoderRot2Rad);
@@ -70,7 +72,7 @@ public class SwerveModule {
     }
 
     public double getTurningPosition() {
-        return turnMotor.getPosition().getValueAsDouble();
+        return turnMotor.getPosition().getValueAsDouble()*ModuleConstants.kTurnEncoderRot2Rad;
     }
 
     public double getDriveVelocity() {
