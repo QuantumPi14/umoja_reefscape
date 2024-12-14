@@ -74,30 +74,30 @@ public final class Constants {
         public static final int kBackRightDriveMotorPort = 26;
         public static final int kBackRightTurningMotorPort = 25;
 
-        public static final boolean kFrontLeftTurningEncoderReversed = true;
-        public static final boolean kBackLeftTurningEncoderReversed = true;
-        public static final boolean kFrontRightTurningEncoderReversed = true;
-        public static final boolean kBackRightTurningEncoderReversed = true;
+        public static final boolean kFrontLeftTurningEncoderReversed = false;
+        public static final boolean kBackLeftTurningEncoderReversed = false;
+        public static final boolean kFrontRightTurningEncoderReversed = false;
+        public static final boolean kBackRightTurningEncoderReversed = false;
 
         public static final boolean kFrontLeftDriveReversed = true;
         public static final boolean kBackLeftDriveReversed = true;
-        public static final boolean kFrontRightDriveReversed = true;
-        public static final boolean kBackRightDriveReversed = true;
+        public static final boolean kFrontRightDriveReversed = false;
+        public static final boolean kBackRightDriveReversed = false;
 
-        public static final int kFrontLeftDriveAbsoluteEncoderPort = 17;
-        public static final int kBackLeftDriveAbsoluteEncoderPort = 22;
-        public static final int kFrontRightDriveAbsoluteEncoderPort = 27;
-        public static final int kBackRightDriveAbsoluteEncoderPort = 12;
+        public static final int kFrontLeftDriveAbsoluteEncoderPort = 1;
+        public static final int kBackLeftDriveAbsoluteEncoderPort = 0;
+        public static final int kFrontRightDriveAbsoluteEncoderPort = 2;
+        public static final int kBackRightDriveAbsoluteEncoderPort = 3;
 
         public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = true;
         public static final boolean kBackLeftDriveAbsoluteEncoderReversed = true;
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = true;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = true;
 
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRot = -0.421387;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRot = -0.341309;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRot = 0.409180;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRot = -0.341553;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRot = 0.849;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRot = 0.597;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRot = 0.148;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRot = 0.613;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 4.4;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;

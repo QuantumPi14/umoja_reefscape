@@ -94,8 +94,12 @@ public class SwerveSubsystem extends SubsystemBase {
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
+
+                // ONLY UNCOMMENT IF YOU ARE NEED TO ZERO WHEELS
+                // resetAbsoluteEncoders();
+
                 zeroHeading();
-                resetDriveEncoders();
+                resetEncoders();
                 // frontRight.driveMotor.setIdleMode(com.revrobotics.CANSparkBase.IdleMode.kCoast);
                 // frontRight.turnMotor.setIdleMode(com.revrobotics.CANSparkBase.IdleMode.kCoast);
             }catch (Exception e) {
@@ -130,19 +134,20 @@ public class SwerveSubsystem extends SubsystemBase {
         // );
     }
 
-    public void resetDriveEncoders(){
+    public void resetEncoders(){
         frontLeft.resetEncoders();
         frontRight.resetEncoders();
         backLeft.resetEncoders();
         backRight.resetEncoders();
     }
 
-    // public void resetTurn(){
-    //     frontLeft.resetTurn();
-    //     frontRight.resetTurn();
-    //     backLeft.resetTurn();
-    //     backRight.resetTurn();
-    // }
+    
+    public void resetAbsoluteEncoders(){
+        frontLeft.resetAbsoluteEncoders();
+        frontRight.resetAbsoluteEncoders();
+        backLeft.resetAbsoluteEncoders();
+        backRight.resetAbsoluteEncoders();
+    }
 
     public void zeroHeading(){
         gyro.reset();
@@ -185,10 +190,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // SmartDashboard.putNumber("FL", Math.toDegrees(frontLeft.getAbsoluteEncoderRad()));
-        // SmartDashboard.putNumber("FR", Math.toDegrees(frontRight.getAbsoluteEncoderRad()));
-        // SmartDashboard.putNumber("BL", Math.toDegrees(backLeft.getAbsoluteEncoderRad()));
-        // SmartDashboard.putNumber("BR", Math.toDegrees(backRight.getAbsoluteEncoderRad()));
+        SmartDashboard.putNumber("FL", Math.toDegrees(frontLeft.getAbsoluteEncoderRad()));
+        SmartDashboard.putNumber("FR", Math.toDegrees(frontRight.getAbsoluteEncoderRad()));
+        SmartDashboard.putNumber("BL", Math.toDegrees(backLeft.getAbsoluteEncoderRad()));
+        SmartDashboard.putNumber("BR", Math.toDegrees(backRight.getAbsoluteEncoderRad()));
 
         SmartDashboard.putNumber("T FL", Math.toDegrees(frontLeft.getTurningPosition())%360);
         SmartDashboard.putNumber("T FR", Math.toDegrees(frontRight.getTurningPosition())%360);

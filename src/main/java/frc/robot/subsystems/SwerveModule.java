@@ -5,7 +5,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -15,6 +15,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -27,16 +28,19 @@ public class SwerveModule {
     // private final RelativeEncoder driveEncoder, turnEncoder;
     private final PIDController turnPIDController;
     // public final CANcoder absoluteEncoder;
+    public double absoluteEncoderOffset;
+    public final AnalogEncoder absoluteEncoder;
     public final int absoluteEncoderID;
 
     public SwerveModule(int driveMotorId, int turnMotorId, boolean driveMotorReversed, boolean turnMotorReversed, int absoluteEncoderId, double absoluteEncoderOffset, boolean isAbsoluteEncoderReversed){   
         // CANcoderConfiguration config = new CANcoderConfiguration();
         
-        // config.MagnetSensor.MagnetOffset = absoluteEncoderOffset;
         // config.MagnetSensor.SensorDirection = isAbsoluteEncoderReversed ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         // config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        // absoluteEncoder = new CANcoder(absoluteEncoderId, "rio");
+        absoluteEncoder = new AnalogEncoder(absoluteEncoderId);
         this.absoluteEncoderID = absoluteEncoderId;
+        this.absoluteEncoderOffset = absoluteEncoderOffset;
+        absoluteEncoder.setPositionOffset(absoluteEncoderOffset);
 
         driveMotor = new TalonFX(driveMotorId);
         turnMotor = new TalonFX(turnMotorId);
@@ -83,23 +87,20 @@ public class SwerveModule {
         return turnMotor.getVelocity().getValueAsDouble();
     }
 
-    // public double getAbsoluteEncoderRad() {
-    //     return absoluteEncoder.getAbsolutePosition().getValueAsDouble() * 2.0 * Math.PI;
-    // }
-
-    // public double getAbsoluteEncoderPosition() {
-    //     return absoluteEncoder.getPosition().getValueAsDouble() * 2.0 * Math.PI;
-    // }
+    public double getAbsoluteEncoderRad() {
+        double trueAbsolutePosition = absoluteEncoder.getAbsolutePosition() - absoluteEncoder.getPositionOffset();
+        return trueAbsolutePosition * 2.0 * Math.PI;
+    }
 
     public void resetEncoders() {
         driveMotor.setPosition(0);
-        // resetTurn();
+        resetTurn();
     }
 
-    // public void resetTurn(){
-    //     double position = getAbsoluteEncoderRad();
-    //     turnEncoder.setPosition(position);
-    // }
+    public void resetTurn(){
+        double position = getAbsoluteEncoderRad();
+        turnMotor.setPosition(position);
+    }
 
     public SwerveModuleState getState() {
         return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
@@ -127,6 +128,10 @@ public class SwerveModule {
         //turnMotor.set(turnPidController.calculate(getTurningPosition(), state.angle.getDegrees()));
     }
 
+    public void resetAbsoluteEncoders(){
+        absoluteEncoder.reset();
+        System.out.println("Reset Absolute Encoder " + absoluteEncoderID);
+    }
     public void stop() {
         driveMotor.set(0);
         turnMotor.set(0);
