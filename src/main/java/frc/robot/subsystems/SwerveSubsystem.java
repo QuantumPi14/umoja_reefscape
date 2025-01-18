@@ -144,12 +144,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     
-    public void resetAbsoluteEncoders(){
-        frontLeft.resetAbsoluteEncoders();
-        frontRight.resetAbsoluteEncoders();
-        backLeft.resetAbsoluteEncoders();
-        backRight.resetAbsoluteEncoders();
-    }
+    // public void resetAbsoluteEncoders(){
+    //     frontLeft.resetAbsoluteEncoders();
+    //     frontRight.resetAbsoluteEncoders();
+    //     backLeft.resetAbsoluteEncoders();
+    //     backRight.resetAbsoluteEncoders();
+    // }
 
     public void zeroHeading(){
         gyro.reset();
