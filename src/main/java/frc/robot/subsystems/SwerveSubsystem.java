@@ -189,15 +189,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("FL", Math.toDegrees(frontLeft.getAbsoluteEncoderDegree()));
-        SmartDashboard.putNumber("FR", Math.toDegrees(frontRight.getAbsoluteEncoderDegree()));
-        SmartDashboard.putNumber("BL", Math.toDegrees(backLeft.getAbsoluteEncoderDegree()));
-        SmartDashboard.putNumber("BR", Math.toDegrees(backRight.getAbsoluteEncoderDegree()));
-
-        SmartDashboard.putNumber("FL TRUE", frontLeft.getAbsoluteEncoderDegree());
-        SmartDashboard.putNumber("FR TRUE", frontRight.getAbsoluteEncoderDegree());
-        SmartDashboard.putNumber("BL TRUE", backLeft.getAbsoluteEncoderDegree());
-        SmartDashboard.putNumber("BR TRUE", backRight.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("FL", frontLeft.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("FR", frontRight.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("BL", backLeft.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("BR", backRight.getAbsoluteEncoderDegree());
 
         SmartDashboard.putNumber("T FL", Math.toDegrees(frontLeft.getTurningPosition())%360);
         SmartDashboard.putNumber("T FR", Math.toDegrees(frontRight.getTurningPosition())%360);

@@ -82,7 +82,7 @@ public class SwerveModule {
     }
 
     public double getTurningPosition() {
-        return turnMotor.getPosition().getValueAsDouble()*ModuleConstants.kTurnEncoderRot2Rad;
+        return Math.toRadians(getAbsoluteEncoderDegree());
     }
 
     public double getDriveVelocity() {
