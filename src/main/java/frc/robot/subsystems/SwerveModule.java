@@ -13,12 +13,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.subsystems.ThriftyEncoder;
 
 
 public class SwerveModule {
@@ -27,7 +27,7 @@ public class SwerveModule {
     private final PIDController turnPIDController;
     // public final CANcoder absoluteEncoder;
     public double absoluteEncoderOffset;
-    public final AnalogEncoder absoluteEncoder;
+    public final ThriftyEncoder absoluteEncoder;
     public final int absoluteEncoderID;
 
     public SwerveModule(int driveMotorId, int turnMotorId, boolean driveMotorReversed, boolean turnMotorReversed, int absoluteEncoderId, double absoluteEncoderOffset, boolean isAbsoluteEncoderReversed){   
@@ -35,7 +35,9 @@ public class SwerveModule {
         
         // config.MagnetSensor.SensorDirection = isAbsoluteEncoderReversed ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         // config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        absoluteEncoder = new AnalogEncoder(absoluteEncoderId, 1.0, absoluteEncoderOffset);
+        absoluteEncoder = new ThriftyEncoder(absoluteEncoderId);
+        absoluteEncoder.setInverted(isAbsoluteEncoderReversed);
+        absoluteEncoder.setPositionOffset(absoluteEncoderOffset);
         this.absoluteEncoderID = absoluteEncoderId;
         this.absoluteEncoderOffset = absoluteEncoderOffset;
 
@@ -90,7 +92,7 @@ public class SwerveModule {
     }
 
     public double getAbsoluteEncoderRad() {
-        return absoluteEncoder.get() * 2.0 * Math.PI;
+        return absoluteEncoder.getVirtualPosition() * 2.0 * Math.PI;
     }
 
     public void resetEncoders() {
@@ -130,7 +132,7 @@ public class SwerveModule {
     }
 
     public void resetAbsoluteEncoders(){
-        // absoluteEncoder.);
+        absoluteEncoder.resetVirtualPosition();
         System.out.println("Reset Absolute Encoder " + absoluteEncoderID);
     }
     public void stop() {
