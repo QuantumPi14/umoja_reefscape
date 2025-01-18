@@ -100,10 +100,12 @@ public final class Constants {
         // public static final double kBackRightDriveAbsoluteEncoderOffsetRot = 0.613;
 
         // OFFSETS
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetDegree = 59.1;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetDegree = 215.4;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetDegree = 151.4;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetDegree = 254.8;
+        // If robot is positively off, subtract
+        // Else, add
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetDegree = 61.645715;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetDegree = 212.642091;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetDegree = 142.585028;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetDegree = 205.105267;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 4.4;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
