@@ -97,9 +97,6 @@ public class SwerveSubsystem extends SubsystemBase {
             try {
                 Thread.sleep(1000);
 
-                // ONLY UNCOMMENT IF YOU ARE NEED TO ZERO WHEELS
-                // resetAbsoluteEncoders();
-
                 zeroHeading();
                 resetEncoders();
                 // frontRight.driveMotor.setIdleMode(com.revrobotics.CANSparkBase.IdleMode.kCoast);
