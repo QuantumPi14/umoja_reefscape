@@ -38,7 +38,7 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.kFrontLeftDriveReversed,
         DriveConstants.kFrontLeftTurningEncoderReversed,
         DriveConstants.kFrontLeftDriveAbsoluteEncoderPort,
-        DriveConstants.kFrontLeftDriveAbsoluteEncoderOffsetRot,
+        DriveConstants.kFrontLeftDriveAbsoluteEncoderOffsetDegree,
         DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed);
 
     private final SwerveModule frontRight = new SwerveModule(
@@ -47,7 +47,7 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.kFrontRightDriveReversed, 
         DriveConstants.kFrontRightTurningEncoderReversed, 
         DriveConstants.kFrontRightDriveAbsoluteEncoderPort,
-        DriveConstants.kFrontRightDriveAbsoluteEncoderOffsetRot, 
+        DriveConstants.kFrontRightDriveAbsoluteEncoderOffsetDegree, 
         DriveConstants.kFrontRightDriveAbsoluteEncoderReversed);
 
     private final SwerveModule backLeft = new SwerveModule(
@@ -56,7 +56,7 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.kBackLeftDriveReversed, 
         DriveConstants.kBackLeftTurningEncoderReversed, 
         DriveConstants.kBackLeftDriveAbsoluteEncoderPort,
-        DriveConstants.kBackLeftDriveAbsoluteEncoderOffsetRot, 
+        DriveConstants.kBackLeftDriveAbsoluteEncoderOffsetDegree, 
         DriveConstants.kBackLeftDriveAbsoluteEncoderReversed);
 
     private final SwerveModule backRight = new SwerveModule(
@@ -65,7 +65,7 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.kBackRightDriveReversed,
         DriveConstants.kBackRightTurningEncoderReversed, 
         DriveConstants.kBackRightDriveAbsoluteEncoderPort,
-        DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRot, 
+        DriveConstants.kBackRightDriveAbsoluteEncoderOffsetDegree, 
         DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
     // private AHRS gyro = new AHRS(SPI.Port.kMXP);
@@ -192,10 +192,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("FL", Math.toDegrees(frontLeft.getAbsoluteEncoderRad()));
-        SmartDashboard.putNumber("FR", Math.toDegrees(frontRight.getAbsoluteEncoderRad()));
-        SmartDashboard.putNumber("BL", Math.toDegrees(backLeft.getAbsoluteEncoderRad()));
-        SmartDashboard.putNumber("BR", Math.toDegrees(backRight.getAbsoluteEncoderRad()));
+        SmartDashboard.putNumber("FL", Math.toDegrees(frontLeft.getAbsoluteEncoderDegree()));
+        SmartDashboard.putNumber("FR", Math.toDegrees(frontRight.getAbsoluteEncoderDegree()));
+        SmartDashboard.putNumber("BL", Math.toDegrees(backLeft.getAbsoluteEncoderDegree()));
+        SmartDashboard.putNumber("BR", Math.toDegrees(backRight.getAbsoluteEncoderDegree()));
+
+        SmartDashboard.putNumber("FL TRUE", frontLeft.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("FR TRUE", frontRight.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("BL TRUE", backLeft.getAbsoluteEncoderDegree());
+        SmartDashboard.putNumber("BR TRUE", backRight.getAbsoluteEncoderDegree());
 
         SmartDashboard.putNumber("T FL", Math.toDegrees(frontLeft.getTurningPosition())%360);
         SmartDashboard.putNumber("T FR", Math.toDegrees(frontRight.getTurningPosition())%360);

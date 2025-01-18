@@ -27,8 +27,8 @@ public class SwerveModule {
     // private final RelativeEncoder driveEncoder, turnEncoder;
     private final PIDController turnPIDController;
     // public final CANcoder absoluteEncoder;
-    public double absoluteEncoderOffset;
-    public final AnalogInput absoluteEncoder;
+    public double absoluteEncoderDegreeOffset;
+    public final AnalogEncoder absoluteEncoder;
     public final int absoluteEncoderID;
 
     public SwerveModule(int driveMotorId, int turnMotorId, boolean driveMotorReversed, boolean turnMotorReversed, int absoluteEncoderId, double absoluteEncoderOffset, boolean isAbsoluteEncoderReversed){   
@@ -36,12 +36,12 @@ public class SwerveModule {
         
         // config.MagnetSensor.SensorDirection = isAbsoluteEncoderReversed ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         // config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        absoluteEncoder = new AnalogInput(absoluteEncoderId);
+        absoluteEncoder = new AnalogEncoder(absoluteEncoderId, 360, 0);
         // absoluteEncoder.setVoltagePercentageRange(absoluteEncoderId, absoluteEncoderOffset);
         absoluteEncoder.setInverted(isAbsoluteEncoderReversed);
         // absoluteEncoder.setPositionOffset(absoluteEncoderOffset);
         this.absoluteEncoderID = absoluteEncoderId;
-        this.absoluteEncoderOffset = absoluteEncoderOffset;
+        this.absoluteEncoderDegreeOffset = absoluteEncoderOffset;
 
         driveMotor = new TalonFX(driveMotorId);
         turnMotor = new TalonFX(turnMotorId);
@@ -93,9 +93,13 @@ public class SwerveModule {
         return turnMotor.getVelocity().getValueAsDouble();
     }
 
-    public double 
-    getAbsoluteEncoderRad() {
-        return absoluteEncoder.get() - absoluteEncoderOffset;   
+    public double getAbsoluteEncoderDegree() {
+        // subtract offset to zero wheels
+        double correctZeroEncoder = absoluteEncoder.get() - absoluteEncoderDegreeOffset;
+        // reverse direction so counter clockwise positive
+        double correctDirectionEncoder = correctZeroEncoder * -1;
+        // add and mod to switch from negative to positive
+        return ((correctDirectionEncoder + 360) % 360);   
     }
 
     public void resetEncoders() {
@@ -104,7 +108,7 @@ public class SwerveModule {
     }
 
     public void resetTurn(){
-        double position = getAbsoluteEncoderRad();
+        double position = getAbsoluteEncoderDegree();
         turnMotor.setPosition(position);
     }
 
