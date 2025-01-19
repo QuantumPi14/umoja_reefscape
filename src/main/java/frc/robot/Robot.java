@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.GameConstants;
 import frc.robot.commands.TeleCommandGroup;
 
 /**
@@ -46,13 +45,13 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {
-    RobotContainer.gameState = GameConstants.Robot;
-  }
+  public void disabledInit() {}
 
   @Override
   public void disabledPeriodic() {}
@@ -87,7 +86,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    RobotContainer.gameState = GameConstants.TeleOp;
   }
 
   /** This function is called periodically during operator control. */
