@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -54,34 +55,11 @@ public class SwerveJoystick extends Command {
     
     if (j.getRawButton(OIConstants.Y)) {
       double KpDistance = -0.1f;  // Proportional control constant for distance
-      double current_distance = Estimate_Distance();  // see the 'Case Study: Estimating Distance'
-      double KpDistance = -0.1f; 
+      double current_distance = Estimate_Distance();  // see the 'Case Study: Estimating Distance' 
       double tx = LimelightHelpers.getTX(LimelightConstants.tagName);
       double distance_error = tx;
-        
-      double tv = LimelightHelpers.getTY(LimelightConstants.tagName);
-    
-      float steering_adjust = 0.0f;
-      if (tv == 0.0f)
-      {
-        // We don't see the target, seek for the target by spinning in place at a safe speed.
-        steering_adjust = 0.3f;		
-      }
-      else
-      {
-        // We do see the target, execute aiming code
-        float heading_error = tx;
-              steering_adjust = Kp * tx;
-      }
-              
-      left_command+=steering_adjust;
-      right_command-=steering_adjust;
-      
-      float distance_error = desired_distance - current_distance;
-      driving_adjust = KpDistance * distance_error;
-        
-      left_command += distance_adjust;
-      right_command += distance_adjust;
+
+      PIDController pid = new PIDController(KpDistance, tx, distance_error)
 
       return;
     }
