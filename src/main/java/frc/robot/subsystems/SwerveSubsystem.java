@@ -1,15 +1,16 @@
 package frc.robot.subsystems;
 
 import com.studica.frc.AHRS;
-// import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-// import com.pathplanner.lib.util.PIDConstants;
-// import com.pathplanner.lib.util.ReplanningConfig;
-// import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -20,7 +21,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.*;
@@ -30,6 +31,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.GameConstants;
 import frc.robot.Constants.PoseEstimatorConstants;
+import frc.robot.LimelightHelpers;
 
 public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule frontLeft = new SwerveModule(
@@ -105,32 +107,42 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         }).start();
     
-        // Configure AutoBuilder last
-        // AutoBuilder.configureHolonomic(
-        //         this::getPose, // Robot pose supplier
-        //         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-        //         this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        //         this::setModuleStatesFromSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        //         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-        //                 new PIDConstants(1, 0.0, 0.0), // Translation PID constants
-        //                 new PIDConstants(Constants.ModuleConstants.kPTurning, 0.0, 0.0), // Rotation PID constants
-        //                 Constants.DriveConstants.kTeleDriveMaxSpeedMetersPerSecond, // Max module speed, in m/s
-        //                 Constants.DriveConstants.kRobotRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-        //                 new ReplanningConfig() // Default path replanning config. See the API for the options here
-        //         ),
-        //         () -> {
-        //             // Boolean supplier that controls when the path will be mirrored for the red alliance
-        //             // This will flip the path being followed to the red side of the field.
-        //             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        // Load the RobotConfig from the GUI settings. You should probably
+        // store this in your Constants file
+        RobotConfig config;
+        try{
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+        // Handle exception as needed
+            e.printStackTrace();
+            System.out.println("ROBOT GAVE UP PLEASE FIX CONFIG");
+            return;
+        }
 
-        //             var alliance = DriverStation.getAlliance();
-        //             if (alliance.isPresent()) {
-        //                 return alliance.get() == DriverStation.Alliance.Red;
-        //             }
-        //             return false;
-        //         },
-        //         this // Reference to this subsystem to set requirements
-        // );
+        // Configure AutoBuilder last
+        AutoBuilder.configure(
+                this::getPose, // Robot pose supplier
+                this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                (speeds, feedforwards) -> setModuleStatesFromSpeeds(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                        new PIDConstants(1, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(Constants.ModuleConstants.kPTurning, 0.0, 0.0) // Rotation PID constants
+                ),
+                config,
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
     }
 
     public void resetEncoders(){
@@ -171,15 +183,15 @@ public class SwerveSubsystem extends SubsystemBase {
         return poseEstimator.getEstimatedPosition();
     }
 
-    // public void resetOdometry(Pose2d pose) {
-    //     System.out.println("ODOMETRY RESET");
-    //     poseEstimator.resetPosition(Rotation2d.fromDegrees(gyro.getYaw()), new SwerveModulePosition[] {
-    //         frontLeft.getPosition(),
-    //         frontRight.getPosition(),
-    //         backLeft.getPosition(),
-    //         backRight.getPosition()
-    //     }, pose);
-    // }
+    public void resetOdometry(Pose2d pose) {
+        System.out.println("ODOMETRY RESET");
+        poseEstimator.resetPosition(Rotation2d.fromDegrees(gyro.getYaw()), new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        }, pose);
+    }
 
     public ChassisSpeeds getRobotRelativeSpeeds(){
         return DriveConstants.kDriveKinematics.toChassisSpeeds(frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState());
@@ -199,8 +211,30 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("T BL", Math.toDegrees(backLeft.getTurningPosition())%360);
         SmartDashboard.putNumber("T BR", Math.toDegrees(backRight.getTurningPosition())%360);
         SmartDashboard.putNumber("YAW", gyro.getYaw());
+        boolean doRejectUpdate = false;
+       
+        String limelightName = "limelight-tags";
+        LimelightHelpers.SetRobotOrientation(limelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
 
-        // if(RobotContainer.gameState!=GameConstants.TeleOp){
+        if(RobotContainer.gameState==GameConstants.TeleOp){
+            if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+            {
+                doRejectUpdate = true;
+            }
+            if (mt2.tagCount == 0)
+            {
+                doRejectUpdate = true;
+            }
+            if (!doRejectUpdate)
+            {
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            poseEstimator.addVisionMeasurement(
+                mt2.pose,
+                mt2.timestampSeconds);
+            }
+        }
+
         //     poseEstimator.update(Rotation2d.fromDegrees(-gyro.getYaw()),
         //     // odometer.update(getRotation2d(),
         //         new SwerveModulePosition[] {
