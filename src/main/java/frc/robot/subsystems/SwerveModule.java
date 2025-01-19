@@ -31,6 +31,7 @@ public class SwerveModule {
     public final AnalogEncoder absoluteEncoder;
     public final int absoluteEncoderID;
 
+    @SuppressWarnings("removal")
     public SwerveModule(int driveMotorId, int turnMotorId, boolean driveMotorReversed, boolean turnMotorReversed, int absoluteEncoderId, double absoluteEncoderOffset, boolean isAbsoluteEncoderReversed){   
         // CANcoderConfiguration config = new CANcoderConfiguration();
         
