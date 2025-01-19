@@ -219,9 +219,7 @@ public class SwerveSubsystem extends SubsystemBase {
         LimelightHelpers.SetRobotOrientation(limelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
 
-        publisher.set(poseEstimator.getEstimatedPosition());
-        
-        if(RobotContainer.gameState==GameConstants.TeleOp){
+
             if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
             {
                 doRejectUpdate = true;
@@ -237,36 +235,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 mt2.pose,
                 mt2.timestampSeconds);
             }
-        }
+        
 
-        //     poseEstimator.update(Rotation2d.fromDegrees(-gyro.getYaw()),
-        //     // odometer.update(getRotation2d(),
-        //         new SwerveModulePosition[] {
-        //         frontLeft.getPosition(),
-        //         frontRight.getPosition(),
-        //         backLeft.getPosition(),
-        //         backRight.getPosition()
-        //     });
-
-        //     // var result = RobotContainer.camera.getLatestResult();
-        //     // boolean hasTargets = result.hasTargets();
-        //     // SmartDashboard.putBoolean("Has Targets", hasTargets);
-        //     // if(hasTargets){
-        //     //     var imageCaptureTime = result.getTimestampSeconds();
-        //     //     var camToTargetTrans = result.getBestTarget().getBestCameraToTarget();
-        //     //     int id = result.getBestTarget().getFiducialId();
-        //     //     var tagFromId = fieldAprilTags.getTagPose(id);
-        //     //     if (tagFromId != null) {
-        //     //         Pose3d tag = tagFromId.get();
-        //     //         Pose3d poseTarget = new Pose3d(tag.getTranslation(), tag.getRotation());
-        //     //         SmartDashboard.putNumber("X", tag.getX());
-        //     //         SmartDashboard.putNumber("Y", tag.getY());
-        //     //         SmartDashboard.putNumber("Z", tag.getZ());
-        //     //         var camPose = poseTarget.transformBy(camToTargetTrans.inverse());
-        //     //         poseEstimator.addVisionMeasurement(camPose.transformBy(PoseEstimatorConstants.kCameraToRobot).toPose2d(), imageCaptureTime);
-        //     //     }
-        //     // }
-        // }
+        publisher.set(poseEstimator.getEstimatedPosition());
     }
 
     public void stopModules() {
