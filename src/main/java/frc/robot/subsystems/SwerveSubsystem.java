@@ -213,30 +213,42 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("T BL", Math.toDegrees(backLeft.getTurningPosition())%360);
         SmartDashboard.putNumber("T BR", Math.toDegrees(backRight.getTurningPosition())%360);
         SmartDashboard.putNumber("YAW", gyro.getYaw());
-        boolean doRejectUpdate = false;
+        
+        SmartDashboard.putNumber("BL Pos", backLeft.getDrivePosition());
+
+        poseEstimator.update(Rotation2d.fromDegrees(-gyro.getYaw()),
+            new SwerveModulePosition[] {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            }
+        );
+        
+
        
         String limelightName = "limelight-tags";
         LimelightHelpers.SetRobotOrientation(limelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
 
+        boolean doRejectUpdate = false;
 
-            if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-            {
-                doRejectUpdate = true;
-            }
-            if (mt2.tagCount == 0)
-            {
-                doRejectUpdate = true;
-            }
-            if (!doRejectUpdate)
-            {
-            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-            poseEstimator.addVisionMeasurement(
-                mt2.pose,
-                mt2.timestampSeconds);
-            }
-        
-
+        if (Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+        {
+            doRejectUpdate = true;
+        }
+        if (mt2.tagCount == 0)
+        {
+            doRejectUpdate = true;
+        }
+        // if (!doRejectUpdate)
+        // {
+        // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        // poseEstimator.addVisionMeasurement(
+        //     mt2.pose,
+        //     mt2.timestampSeconds);
+        // }
+    
         publisher.set(poseEstimator.getEstimatedPosition());
     }
 
