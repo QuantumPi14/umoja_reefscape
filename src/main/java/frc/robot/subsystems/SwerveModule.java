@@ -43,8 +43,8 @@ public class SwerveModule {
         this.absoluteEncoderID = absoluteEncoderId;
         this.absoluteEncoderDegreeOffset = absoluteEncoderOffset;
 
-        driveMotor = new TalonFX(driveMotorId);
-        turnMotor = new TalonFX(turnMotorId);
+        driveMotor = new TalonFX(driveMotorId, "CANivore");
+        turnMotor = new TalonFX(turnMotorId, "CANivore");
 
         // driveMotor.setIdleMode(com.revrobotics.CANSparkBase.IdleMode.kBrake);
         // turnMotor.setIdleMode(com.revrobotics.CANSparkBase.IdleMode.kBrake);
@@ -71,6 +71,7 @@ public class SwerveModule {
         // turnEncoder.setPositionConversionFactor(ModuleConstants.kTurnEncoderRot2Rad);
         // turnEncoder.setVelocityConversionFactor(ModuleConstants.kTurnEncoderRPM2RadPerSec);
 
+
         turnPIDController = new PIDController(ModuleConstants.kPTurning, 0, 0);
         turnPIDController.enableContinuousInput(-Math.PI, Math.PI);
         
@@ -78,7 +79,7 @@ public class SwerveModule {
     }
 
     public double getDrivePosition() {
-        return driveMotor.getPosition().getValueAsDouble();
+        return driveMotor.getPosition().getValueAsDouble()*ModuleConstants.kDriveEncoderRot2Meter;
     }
 
     public double getTurningPosition() {
@@ -86,11 +87,11 @@ public class SwerveModule {
     }
 
     public double getDriveVelocity() {
-        return driveMotor.getVelocity().getValueAsDouble();
+        return driveMotor.getVelocity().getValueAsDouble()*ModuleConstants.kDriveEncoderRPM2MeterPerSec;
     }
 
     public double getTurningVelocity() {
-        return turnMotor.getVelocity().getValueAsDouble();
+        return turnMotor.getVelocity().getValueAsDouble()*ModuleConstants.kTurnEncoderRPM2RadPerSec;
     }
 
     public double getAbsoluteEncoderDegree() {
@@ -149,7 +150,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            driveMotor.getPosition().getValueAsDouble(),
+            getDrivePosition(),
             Rotation2d.fromRadians(getTurningPosition()));
       }
 }
