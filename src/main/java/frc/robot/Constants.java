@@ -136,17 +136,17 @@ public final class Constants {
         public static final int TeleOp = 2;
     }
 
-    public static final class ArmConstants {
-        public static final int leftMotorID = 43;
-        public static final int rightMotorID = 44;
-        public static final double kP =  0.1;
-        public static final double kD =  0.01;
-        public static final double speakerEncoder = -34; //-30;
-        public static final double farSpeakerEncoder = -52; // 50->45, might need to adjust TO-DO
-        public static final double ampEncoder = -150;
-        public static final double armStartingPos = -120; 
-        public static final double armHover = -2;
-    }
+    // public static final class ArmConstants {
+    //     public static final int leftMotorID = 43;
+    //     public static final int rightMotorID = 44;
+    //     public static final double kP =  0.1;
+    //     public static final double kD =  0.01;
+    //     public static final double speakerEncoder = -34; //-30;
+    //     public static final double farSpeakerEncoder = -52; // 50->45, might need to adjust TO-DO
+    //     public static final double ampEncoder = -150;
+    //     public static final double armStartingPos = -120; 
+    //     public static final double armHover = -2;
+    // }
 
     public static final class PoseEstimatorConstants {
         // See
@@ -178,11 +178,11 @@ public final class Constants {
         );
     }
 
-    public static final class ClimbConstants {
-        public static final int leftMotorID = 50;
-        public static final int rightMotorID = 51;
-        public static final double kP =  1 / 1;
-    }
+    // public static final class ClimbConstants {
+    //     public static final int leftMotorID = 50;
+    //     public static final int rightMotorID = 51;
+    //     public static final double kP =  1 / 1;
+    // }
 
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 8;
@@ -232,6 +232,12 @@ public final class Constants {
         public static final int RT = 3;
         public static final int RX = 4;
         public static final int RY = 5;
+    }
+
+    public static final class LimelightConstants {
+        public static final String tagName = "limelight-tags";
+        public static final String gamePieceName = "limelight-gp";
+        public static final int Estimate_Distance = 20;
     }
 
     public static final class Colors {

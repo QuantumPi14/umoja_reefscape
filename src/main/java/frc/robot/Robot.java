@@ -4,10 +4,20 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
+import choreo.Choreo;
+import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.TeleCommandGroup;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,6 +26,12 @@ import frc.robot.commands.TeleCommandGroup;
  * project.
  */
 public class Robot extends TimedRobot {
+  
+  // Loads a swerve trajectory, alternatively use DifferentialSample if the robot is tank drive
+  private final Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("myTrajectory");
+
+  private final Timer timer = new Timer();
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -59,6 +75,18 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    if (trajectory.isPresent()) {
+        // Get the initial pose of the trajectory
+        Optional<Pose2d> initialPose = trajectory.get().getInitialPose(isRedAlliance());
+
+        if (initialPose.isPresent()) {
+            // Reset odometry to the start of the trajectory
+            RobotContainer.swerveSubsystem.resetOdometry(initialPose.get());
+        }
+    }
+
+    // Reset and start the timer when the autonomous period begins
+    timer.restart();
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // // schedule the autonomous command (example)
@@ -69,7 +97,16 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if (trajectory.isPresent()) {
+        // Sample the trajectory at the current time into the autonomous period
+        Optional<SwerveSample> sample = trajectory.get().sampleAt(timer.get(), isRedAlliance());
+
+        if (sample.isPresent()) {
+          RobotContainer.swerveSubsystem.followTrajectory(sample);
+        }
+    }
+  }
 
   @Override
   public void teleopInit() {
@@ -109,4 +146,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+  
+  private boolean isRedAlliance() {
+    return DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Red);  
+  }
 }

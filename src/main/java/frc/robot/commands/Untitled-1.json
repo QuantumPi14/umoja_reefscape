@@ -1,0 +1,704 @@
+[
+    {
+        "messageType": 2,
+        "timestamp": 0,
+        "seqNumber": 65,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.0233154296875,
+        "seqNumber": 66,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.259521484375,
+        "seqNumber": 67,
+        "line": "NT: Got a NT4 connection from 10.77.12.201 port 60296"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.2653961181640625,
+        "seqNumber": 68,
+        "line": "NT: CONNECTED NT4 client 'DartClient_83513634@1' (from 10.77.12.201:60296)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.2711944580078125,
+        "seqNumber": 69,
+        "line": "NT: Got a NT4 connection from 10.77.12.201 port 60297"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.273040771484375,
+        "seqNumber": 70,
+        "line": "NT: CONNECTED RTT client (from 10.77.12.201:60297)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.456573486328125,
+        "seqNumber": 71,
+        "line": "NT: Got a NT3 connection from 10.77.12.201 port 60298"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.471466064453125,
+        "seqNumber": 72,
+        "line": "NT: CONNECTED NT3 client 'SmartDashboard-NT3@10.77.12.201:60298' (from 10.77.12.201:60298)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.0075531005859375,
+        "seqNumber": 73,
+        "line": "NT: Got a NT4 connection from 10.77.12.202 port 52282"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.01007080078125,
+        "seqNumber": 74,
+        "line": "NT: CONNECTED NT4 client 'limelight-gp@3' (from 10.77.12.202:52282)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.0108642578125,
+        "seqNumber": 75,
+        "line": "NT: Got a NT4 connection from 10.77.12.200 port 35666"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.0125885009765625,
+        "seqNumber": 76,
+        "line": "NT: CONNECTED NT4 client 'limelight-tags@4' (from 10.77.12.200:35666)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.220458984375,
+        "seqNumber": 77,
+        "line": "Instantiating NavX on roboRIO MXP Port."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.222442626953125,
+        "seqNumber": 78,
+        "line": "NavX: Library for FRC"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.227264404296875,
+        "seqNumber": 79,
+        "line": "NavX: Connected."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.2290496826171875,
+        "seqNumber": 80,
+        "line": "NavX: Board Type 50 (navX2-MXP (Gen 2))"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.230712890625,
+        "seqNumber": 81,
+        "line": "NavX: firmware version 4.0.447"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.232147216796875,
+        "seqNumber": 82,
+        "line": "NavX: startup initialization and startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.239471435546875,
+        "seqNumber": 83,
+        "line": "NavX: onboard startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.2413177490234375,
+        "seqNumber": 84,
+        "line": "NavX: Yaw angle auto-reset to 0.0 due to startup calibration."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.8689117431640625,
+        "seqNumber": 85,
+        "line": "********** Robot program startup complete **********"
+    },
+    {
+        "timestamp": 1.9500274658203125,
+        "seqNumber": 86,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Loop time of 0.02s overrun\n",
+        "location": "edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.95123291015625,
+        "seqNumber": 87,
+        "line": "Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436): Loop time of 0.02s overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 1.9521331787109375,
+        "seqNumber": 88,
+        "line": ""
+    },
+    {
+        "timestamp": 2.1697845458984375,
+        "seqNumber": 89,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tSmartDashboard.updateValues(): 0.002041s\n\tdisabledInit(): 0.002356s\n\trobotPeriodic(): 0.048953s\n\tLiveWindow.updateValues(): 0.000092s\n\tShuffleboard.update(): 0.000928s\n\tdisabledPeriodic(): 0.000965s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.1703643798828125,
+        "seqNumber": 90,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tSmartDashboard.updateValues(): 0.002041s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.17071533203125,
+        "seqNumber": 91,
+        "line": "\tdisabledInit(): 0.002356s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.171112060546875,
+        "seqNumber": 92,
+        "line": "\trobotPeriodic(): 0.048953s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.17132568359375,
+        "seqNumber": 93,
+        "line": "\tLiveWindow.updateValues(): 0.000092s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.1715087890625,
+        "seqNumber": 94,
+        "line": "\tShuffleboard.update(): 0.000928s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.17169189453125,
+        "seqNumber": 95,
+        "line": "\tdisabledPeriodic(): 0.000965s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.171966552734375,
+        "seqNumber": 96,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 2.580108642578125,
+        "seqNumber": 97,
+        "line": "NavX: Software Yaw Reset completed."
+    },
+    {
+        "timestamp": 3.681243896484375,
+        "seqNumber": 98,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix] Library initialization is complete.",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 5.7163543701171875,
+        "seqNumber": 99,
+        "numOccur": 1,
+        "errorCode": 0,
+        "flags": 0,
+        "details": "[phoenix-diagnostics] Server 2025.1.0 (Jan 17 2025, 15:36:15) running on port: 1250",
+        "location": "",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "timestamp": 11.384658813476562,
+        "seqNumber": 100,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Loop time of 0.02s overrun\n",
+        "location": "edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.386184692382812,
+        "seqNumber": 101,
+        "line": "Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436): Loop time of 0.02s overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.386581420898438,
+        "seqNumber": 102,
+        "line": ""
+    },
+    {
+        "timestamp": 11.399948120117188,
+        "seqNumber": 103,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tSmartDashboard.updateValues(): 0.001020s\n\trobotPeriodic(): 0.022371s\n\tLiveWindow.updateValues(): 0.000019s\n\tShuffleboard.update(): 0.000018s\n\tdisabledPeriodic(): 0.000093s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.400741577148438,
+        "seqNumber": 104,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tSmartDashboard.updateValues(): 0.001020s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.401290893554688,
+        "seqNumber": 105,
+        "line": "\trobotPeriodic(): 0.022371s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.401565551757812,
+        "seqNumber": 106,
+        "line": "\tLiveWindow.updateValues(): 0.000019s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.401763916015625,
+        "seqNumber": 107,
+        "line": "\tShuffleboard.update(): 0.000018s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.402069091796875,
+        "seqNumber": 108,
+        "line": "\tdisabledPeriodic(): 0.000093s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 11.402252197265625,
+        "seqNumber": 109,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 154.38294982910156,
+        "seqNumber": 110,
+        "line": "NT: DISCONNECTED NT4 client 'DartClient_83513634@1' (from 10.77.12.201:60296): connection timed out"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 156.5581817626953,
+        "seqNumber": 111,
+        "line": "NT: DISCONNECTED RTT client (from 10.77.12.201:60297): remote close: "
+    },
+    {
+        "messageType": 2,
+        "timestamp": 156.6523895263672,
+        "seqNumber": 112,
+        "line": "NT: NT3 socket error: operation canceled"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 156.6527862548828,
+        "seqNumber": 113,
+        "line": "NT: DISCONNECTED NT3 client 'SmartDashboard-NT3@10.77.12.201:60298' (from 10.77.12.201:60298): transmit stalled"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 157.6677703857422,
+        "seqNumber": 114,
+        "line": "NT: Got a NT4 connection from 10.77.12.201 port 65140"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 157.6708221435547,
+        "seqNumber": 115,
+        "line": "NT: CONNECTED NT4 client 'DartClient_36654393@1' (from 10.77.12.201:65140)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 157.79640197753906,
+        "seqNumber": 116,
+        "line": "NT: Got a NT4 connection from 10.77.12.201 port 65145"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 157.79905700683594,
+        "seqNumber": 117,
+        "line": "NT: CONNECTED RTT client (from 10.77.12.201:65145)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.00965881347656,
+        "seqNumber": 118,
+        "line": "NT: Got a NT3 connection from 10.77.12.201 port 65146"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.0127716064453,
+        "seqNumber": 119,
+        "line": "NT: CONNECTED NT3 client 'SmartDashboard-NT3@10.77.12.201:65146' (from 10.77.12.201:65146)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.0215301513672,
+        "seqNumber": 120,
+        "line": "NT: Got a NT3 connection from 10.77.12.201 port 65154"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.07704162597656,
+        "seqNumber": 121,
+        "line": "NT: NT3 socket error: socket is not connected"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.07752990722656,
+        "seqNumber": 122,
+        "line": "NT: DISCONNECTED NT3 client '' (from 10.77.12.201:65154): remote end closed connection"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.9118194580078,
+        "seqNumber": 123,
+        "line": "NT: Got a NT3 connection from 10.77.12.201 port 65159"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.9185333251953,
+        "seqNumber": 124,
+        "line": "NT: NT3 socket error: socket is not connected"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 158.92051696777344,
+        "seqNumber": 125,
+        "line": "NT: DISCONNECTED NT3 client '' (from 10.77.12.201:65159): remote end closed connection"
+    },
+    {
+        "timestamp": 288.8236083984375,
+        "seqNumber": 126,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Loop time of 0.02s overrun\n",
+        "location": "edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.82464599609375,
+        "seqNumber": 127,
+        "line": "Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436): Loop time of 0.02s overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.8258056640625,
+        "seqNumber": 128,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.85198974609375,
+        "seqNumber": 129,
+        "line": "CommandScheduler loop overrun"
+    },
+    {
+        "timestamp": 288.85784912109375,
+        "seqNumber": 130,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tSwerveSubsystem.periodic(): 0.001799s\n\tbuttons.run(): 0.000056s\n\tTeleCommandGroup.initialize(): 0.001298s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.85845947265625,
+        "seqNumber": 131,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tSwerveSubsystem.periodic(): 0.001799s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.8587646484375,
+        "seqNumber": 132,
+        "line": "\tbuttons.run(): 0.000056s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.8597412109375,
+        "seqNumber": 133,
+        "line": "\tTeleCommandGroup.initialize(): 0.001298s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.860595703125,
+        "seqNumber": 134,
+        "line": ""
+    },
+    {
+        "timestamp": 288.86724853515625,
+        "seqNumber": 135,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tteleopPeriodic(): 0.000946s\n\tSmartDashboard.updateValues(): 0.000074s\n\trobotPeriodic(): 0.010017s\n\tLiveWindow.updateValues(): 0.000019s\n\tShuffleboard.update(): 0.000000s\n\tteleopInit(): 0.045207s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.86773681640625,
+        "seqNumber": 136,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tteleopPeriodic(): 0.000946s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.86798095703125,
+        "seqNumber": 137,
+        "line": "\tSmartDashboard.updateValues(): 0.000074s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.86822509765625,
+        "seqNumber": 138,
+        "line": "\trobotPeriodic(): 0.010017s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.86846923828125,
+        "seqNumber": 139,
+        "line": "\tLiveWindow.updateValues(): 0.000019s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.8687744140625,
+        "seqNumber": 140,
+        "line": "\tShuffleboard.update(): 0.000000s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.86920166015625,
+        "seqNumber": 141,
+        "line": "\tteleopInit(): 0.045207s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.869384765625,
+        "seqNumber": 142,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 288.9207763671875,
+        "seqNumber": 143,
+        "line": "CommandScheduler loop overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 293.744140625,
+        "seqNumber": 144,
+        "line": "NavX: Software Yaw Reset completed."
+    },
+    {
+        "timestamp": 295.344482421875,
+        "seqNumber": 145,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Loop time of 0.02s overrun\n",
+        "location": "edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.34564208984375,
+        "seqNumber": 146,
+        "line": "Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:436): Loop time of 0.02s overrun"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.34600830078125,
+        "seqNumber": 147,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.42730712890625,
+        "seqNumber": 148,
+        "line": "CommandScheduler loop overrun"
+    },
+    {
+        "timestamp": 295.4359130859375,
+        "seqNumber": 149,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tSwerveSubsystem.periodic(): 0.000538s\n\tTeleCommandGroup.execute(): 0.104139s\n\tbuttons.run(): 0.000000s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.43646240234375,
+        "seqNumber": 150,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tSwerveSubsystem.periodic(): 0.000538s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.4383544921875,
+        "seqNumber": 151,
+        "line": "\tTeleCommandGroup.execute(): 0.104139s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.43951416015625,
+        "seqNumber": 152,
+        "line": "\tbuttons.run(): 0.000000s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.4398193359375,
+        "seqNumber": 153,
+        "line": ""
+    },
+    {
+        "timestamp": 295.48284912109375,
+        "seqNumber": 154,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "\tteleopPeriodic(): 0.000167s\n\tSmartDashboard.updateValues(): 0.000389s\n\trobotPeriodic(): 0.137103s\n\tLiveWindow.updateValues(): 0.000000s\n\tShuffleboard.update(): 0.000000s\n",
+        "location": "edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.484130859375,
+        "seqNumber": 155,
+        "line": "Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:62): \tteleopPeriodic(): 0.000167s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.4844970703125,
+        "seqNumber": 156,
+        "line": "\tSmartDashboard.updateValues(): 0.000389s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.48468017578125,
+        "seqNumber": 157,
+        "line": "\trobotPeriodic(): 0.137103s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.48529052734375,
+        "seqNumber": 158,
+        "line": "\tLiveWindow.updateValues(): 0.000000s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.48681640625,
+        "seqNumber": 159,
+        "line": "\tShuffleboard.update(): 0.000000s"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 295.48712158203125,
+        "seqNumber": 160,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 316.881591796875,
+        "seqNumber": 161,
+        "line": "NavX: DISCONNECTED!!!."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 317.38348388671875,
+        "seqNumber": 162,
+        "line": "NavX: Software Yaw Reset completed."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 319.20556640625,
+        "seqNumber": 163,
+        "line": "NavX: Connected."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 319.2059326171875,
+        "seqNumber": 164,
+        "line": "NavX: startup initialization and startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 320.73907470703125,
+        "seqNumber": 165,
+        "line": "NavX: DISCONNECTED!!!."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 321.973876953125,
+        "seqNumber": 166,
+        "line": "NavX: Connected."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 321.9771728515625,
+        "seqNumber": 167,
+        "line": "NavX: startup initialization and startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 321.9774169921875,
+        "seqNumber": 168,
+        "line": "NavX: onboard startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 321.97760009765625,
+        "seqNumber": 169,
+        "line": "NavX: Yaw angle auto-reset to 0.0 due to startup calibration."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 347.78314208984375,
+        "seqNumber": 170,
+        "line": "NavX: Software Yaw Reset completed."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 366.80364990234375,
+        "seqNumber": 171,
+        "line": "NavX: Software Yaw Reset completed."
+    }
+]
