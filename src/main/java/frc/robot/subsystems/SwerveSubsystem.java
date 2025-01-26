@@ -73,17 +73,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // private AHRS gyro = new AHRS(SPI.Port.kMXP);
     private AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
-
-    // private AprilTagFieldLayout fieldAprilTags= AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-
-    // public final SwerveDriveOdometry odometer = new SwerveDriveOdometry(
-    //     DriveConstants.kDriveKinematics, new Rotation2d(),
-    //     new SwerveModulePosition[] {
-    //       frontLeft.getPosition(),
-    //       frontRight.getPosition(),
-    //       backLeft.getPosition(),
-    //       backRight.getPosition()
-    //     }, new Pose2d());
     
     public final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics, new Rotation2d(),
@@ -153,14 +142,6 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.resetEncoders();
     }
 
-    
-    // public void resetAbsoluteEncoders(){
-    //     frontLeft.resetAbsoluteEncoders();
-    //     frontRight.resetAbsoluteEncoders();
-    //     backLeft.resetAbsoluteEncoders();
-    //     backRight.resetAbsoluteEncoders();
-    // }
-
     public void zeroHeading(){
         gyro.reset();
     }
@@ -213,8 +194,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("T BL", Math.toDegrees(backLeft.getTurningPosition())%360);
         SmartDashboard.putNumber("T BR", Math.toDegrees(backRight.getTurningPosition())%360);
         SmartDashboard.putNumber("YAW", gyro.getYaw());
-        
-        SmartDashboard.putNumber("BL Pos", backLeft.getDrivePosition());
 
         poseEstimator.update(Rotation2d.fromDegrees(-gyro.getYaw()),
             new SwerveModulePosition[] {
@@ -241,13 +220,17 @@ public class SwerveSubsystem extends SubsystemBase {
         {
             doRejectUpdate = true;
         }
-        // if (!doRejectUpdate)
-        // {
-        // poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-        // poseEstimator.addVisionMeasurement(
-        //     mt2.pose,
-        //     mt2.timestampSeconds);
-        // }
+        if (!doRejectUpdate)
+        {
+            if (RobotContainer.gameState == GameConstants.Robot) {
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
+            } else {
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            }
+            poseEstimator.addVisionMeasurement(
+                mt2.pose,
+                mt2.timestampSeconds);
+        }
     
         publisher.set(poseEstimator.getEstimatedPosition());
     }
