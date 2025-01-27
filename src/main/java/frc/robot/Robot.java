@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import choreo.Choreo;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
@@ -98,14 +100,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    if (trajectory.isPresent()) {
-        // Sample the trajectory at the current time into the autonomous period
-        Optional<SwerveSample> sample = trajectory.get().sampleAt(timer.get(), isRedAlliance());
-
-        if (sample.isPresent()) {
-          RobotContainer.swerveSubsystem.followTrajectory(sample);
-        }
-    }
   }
 
   @Override

@@ -2,9 +2,11 @@ package frc.robot.subsystems;
 
 import com.studica.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.apriltag.AprilTag;
@@ -23,8 +25,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.Constants;
@@ -94,6 +100,8 @@ public class SwerveSubsystem extends SubsystemBase {
             backRight.getPosition()
         }, new Pose2d()
     );
+    
+    RobotConfig config;
 
     public SwerveSubsystem() {
         new Thread(() -> {
@@ -110,7 +118,6 @@ public class SwerveSubsystem extends SubsystemBase {
     
         // Load the RobotConfig from the GUI settings. You should probably
         // store this in your Constants file
-        RobotConfig config;
         try{
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
@@ -144,6 +151,38 @@ public class SwerveSubsystem extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
+    }
+    // Assuming this is a method in your drive subsystem
+    public Command followPathCommand(String pathName) {
+        try{
+            PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+            return new FollowPathCommand(path,
+                    this::getPose, // Robot pose supplier
+                    this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                    (speeds, feedforwards) -> setModuleStatesFromSpeeds(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds, AND feedforwards
+                    new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                    ),
+                    config,
+                    () -> {
+                        // Boolean supplier that controls when the path will be mirrored for the red alliance
+                        // This will flip the path being followed to the red side of the field.
+                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                        var alliance = DriverStation.getAlliance();
+                        if (alliance.isPresent()) {
+                            return alliance.get() == DriverStation.Alliance.Red;
+                        }
+                        return false;
+                    },
+                    this // Reference to this subsystem to set requirements
+                );
+        } catch (Exception e) {
+            DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+            return Commands.none();
+        }
     }
 
     public void resetEncoders(){
@@ -198,11 +237,21 @@ public class SwerveSubsystem extends SubsystemBase {
         return DriveConstants.kDriveKinematics.toChassisSpeeds(frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState());
     }
 
-    StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault().getStructTopic("MyPose", Pose2d.struct).publish();
-
+    StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("MyPose", Pose2d.struct).publish();
+    StructArrayPublisher<SwerveModuleState> swerveStatePublisher = NetworkTableInstance.getDefault()
+.getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
     @Override
     public void periodic() {
+        
+        SwerveModuleState[] moduleStates = new SwerveModuleState[] {
+            frontLeft.getState(),
+            frontRight.getState(),
+            backLeft.getState(),
+            backRight.getState()
+        };
+        
+        swerveStatePublisher.set(moduleStates);
         SmartDashboard.putNumber("FL", frontLeft.getAbsoluteEncoderDegree());
         SmartDashboard.putNumber("FR", frontRight.getAbsoluteEncoderDegree());
         SmartDashboard.putNumber("BL", backLeft.getAbsoluteEncoderDegree());
@@ -249,7 +298,7 @@ public class SwerveSubsystem extends SubsystemBase {
         //     mt2.timestampSeconds);
         // }
     
-        publisher.set(poseEstimator.getEstimatedPosition());
+        posePublisher.set(poseEstimator.getEstimatedPosition());
     }
 
     public void stopModules() {
