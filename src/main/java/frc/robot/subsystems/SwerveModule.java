@@ -139,10 +139,6 @@ public class SwerveModule {
         //turnMotor.set(turnPidController.calculate(getTurningPosition(), state.angle.getDegrees()));
     }
 
-    // public void resetAbsoluteEncoders(){
-    //     absoluteEncoder.resetPosition();
-    //     System.out.println("Reset Absolute Encoder " + absoluteEncoderID);
-    // }
     public void stop() {
         driveMotor.set(0);
         turnMotor.set(0);
