@@ -253,11 +253,33 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         );
         
+        String tagLimelightName = Constants.LimelightConstants.tagName;
+        if (LimelightHelpers.getTargetCount(tagLimelightName) != 0) {
+            Pose3d targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(tagLimelightName);
+            Double targetYaw = targetPose3d.getRotation().getMeasureAngle().baseUnitMagnitude();
+            Double targetX = targetPose3d.getX();
+    
+            SmartDashboard.putNumber("target yaw", targetYaw);
+            SmartDashboard.putNumber("target x", targetX);
 
+            // lined up angle perfectly (turn off limelight)
+            // TODO: Move this number to constants file
+            Boolean alignedYaw = targetYaw <= 0.06;
+            Boolean alignedX = Math.abs(targetX) <= 0.02;
+            if (alignedX && alignedYaw){
+                // TODO: Replace with LEDs ready for game
+                LimelightHelpers.setLEDMode_ForceOff(Constants.LimelightConstants.gamePieceName);
+            } else {
+                // TODO: Replace with LEDs not game ready
+                LimelightHelpers.setLEDMode_ForceOn(Constants.LimelightConstants.gamePieceName);
+            }
+        } else {
+            // TODO: Replace with LEDs not game ready
+            LimelightHelpers.setLEDMode_ForceOn(Constants.LimelightConstants.gamePieceName);
+        }
        
-        String limelightName = "limelight-tags";
-        LimelightHelpers.SetRobotOrientation(limelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+        LimelightHelpers.SetRobotOrientation(tagLimelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(tagLimelightName);
 
         boolean doRejectUpdate = false;
 
