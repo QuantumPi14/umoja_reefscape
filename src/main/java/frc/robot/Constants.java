@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -250,5 +252,10 @@ public final class Constants {
         public static final Color uGreen = new Color(0, 7, 0);
         public static final Color uOrange = new Color(255, 25, 0);
         public static final Color[] uColors = {uRed, uDarkOrange, uGreen, uOrange};
+    }
+
+    public static final class RobotPositions {
+        public static final Pose2d redCenter = new Pose2d(11.62, 4, new Rotation2d(0));
+        public static final Pose2d redCenterSafe = new Pose2d(11.35, 4, new Rotation2d(0));
     }
 }

@@ -45,6 +45,7 @@ public class RobotContainer {
   public final static Joystick driverController = new Joystick(USB.DRIVER_CONTROLLER);
 
   public static int gameState = GameConstants.Robot;
+  public static Trajectory currentTrajectory = null;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -86,12 +87,10 @@ public class RobotContainer {
 
         // 2. Generate trajectory
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-                new Pose2d(0, 0, new Rotation2d(0)),
-                List.of(
-                        new Translation2d(1, 0),
-                        new Translation2d(1, -1)),
-                new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
-                trajectoryConfig);
+            RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition(),
+            List.of(),
+            Constants.RobotPositions.redCenterSafe,
+            trajectoryConfig);
 
         // 3. Define PID controllers for tracking trajectory
         PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
@@ -113,7 +112,7 @@ public class RobotContainer {
 
         // 5. Add some init and wrap-up, and return everything
         return new SequentialCommandGroup(
-                new InstantCommand(() -> swerveSubsystem.resetOdometry(trajectory.getInitialPose())),
+                // new InstantCommand(() -> swerveSubsystem.resetOdometry(trajectory.getInitialPose())),
                 swerveControllerCommand,
                 new InstantCommand(() -> swerveSubsystem.stopModules()));
   }

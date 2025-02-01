@@ -9,11 +9,13 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
@@ -34,6 +36,7 @@ public class SwerveJoystick extends Command {
   private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
 
   Joystick j = new Joystick(USB.DRIVER_CONTROLLER);
+
 
   /** Creates a new SwerveJoystick. */
   public SwerveJoystick(SwerveSubsystem swerveSubsystem, Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, 
@@ -114,7 +117,28 @@ public class SwerveJoystick extends Command {
            
       
             return;
-          }
+      }
+
+      Boolean aButtonPressed = j.getRawButton(OIConstants.A);
+      if (aButtonPressed) {
+        if (RobotContainer.currentTrajectory == null) {
+            RobotContainer.currentTrajectory = swerveSubsystem.getNearestTagTrajectory();
+        }
+        // double curTime = swerveSubsystem.timer.get();
+        // var desiredState = RobotContainer.currentTrajectory.sample(curTime);
+        // var desiredRotation = RobotContainer.currentTrajectory.getStates().get(RobotContainer.currentTrajectory.getStates().size() - 1).poseMeters.getRotation();
+        
+        var desiredState = RobotContainer.currentTrajectory.getStates().get(RobotContainer.currentTrajectory.getStates().size() - 1);
+        var desiredRotation = desiredState.poseMeters.getRotation();
+        var targetChassisSpeeds =
+            swerveSubsystem.holonomicDriveController.calculate(swerveSubsystem.getPose(), desiredState, desiredRotation);
+        var targetModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(targetChassisSpeeds);
+
+        swerveSubsystem.setModuleStates(targetModuleStates);
+        return;
+      } else {
+        RobotContainer.currentTrajectory = null;
+      }
       
       
           // 1. Get joystic inputs
