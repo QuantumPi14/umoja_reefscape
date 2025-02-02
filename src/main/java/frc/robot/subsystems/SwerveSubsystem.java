@@ -213,6 +213,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void zeroHeading(){
+        RobotContainer.wantedAngle = -1;
         gyro.reset();
     }
 
@@ -318,20 +319,22 @@ public class SwerveSubsystem extends SubsystemBase {
         {
             doRejectUpdate = true;
         }
-        if (mt2.tagCount == 0)
-        {
-            doRejectUpdate = true;
-        }
-        if (!doRejectUpdate)
-        {
-            if (RobotContainer.gameState == GameConstants.Robot) {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
-            } else {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        if (mt2 != null) {
+            if (mt2.tagCount == 0)
+            {
+                doRejectUpdate = true;
             }
-            poseEstimator.addVisionMeasurement(
-                mt2.pose,
-                mt2.timestampSeconds);
+            if (!doRejectUpdate)
+            {
+                if (RobotContainer.gameState == GameConstants.Robot) {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
+                } else {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+                }
+                poseEstimator.addVisionMeasurement(
+                    mt2.pose,
+                    mt2.timestampSeconds);
+            }
         }
     
         posePublisher.set(poseEstimator.getEstimatedPosition());
