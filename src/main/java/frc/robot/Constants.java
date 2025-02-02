@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -105,7 +107,7 @@ public final class Constants {
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetDegree = 61.645715;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetDegree = 212.642091;
         public static final double kBackLeftDriveAbsoluteEncoderOffsetDegree = 142.585028;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetDegree = 205.105267;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetDegree = 189.405267;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 4.4;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
@@ -115,8 +117,9 @@ public final class Constants {
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
 
-        public static final double kSlowButtonDriveModifier = 0.4;
+        public static final double kSlowButtonDriveModifier = 0.2;
         public static final double kSlowButtonTurnModifier = 0.5;
+        public static final double kPDrift = 0.1;
     }
 
     public static final class IntakeConstants {
@@ -250,5 +253,10 @@ public final class Constants {
         public static final Color uGreen = new Color(0, 7, 0);
         public static final Color uOrange = new Color(255, 25, 0);
         public static final Color[] uColors = {uRed, uDarkOrange, uGreen, uOrange};
+    }
+
+    public static final class RobotPositions {
+        public static final Pose2d redCenter = new Pose2d(11.62, 4.0259, new Rotation2d(0));
+        public static final Pose2d redCenterSafe = new Pose2d(11.35, 4.0259, new Rotation2d(0));
     }
 }

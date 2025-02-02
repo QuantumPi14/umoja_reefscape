@@ -83,20 +83,20 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    if (trajectory.isPresent()) {
-        // Get the initial pose of the trajectory
-        Optional<Pose2d> initialPose = trajectory.get().getInitialPose(isRedAlliance());
+    RobotContainer.gameState = GameConstants.Auto;
+    // if (trajectory.isPresent()) {
+    //     // Get the initial pose of the trajectory
+    //     Optional<Pose2d> initialPose = trajectory.get().getInitialPose(isRedAlliance());
 
-        if (initialPose.isPresent()) {
-            // Reset odometry to the start of the trajectory
-            RobotContainer.swerveSubsystem.resetOdometry(initialPose.get());
-        }
-    }
+    //     if (initialPose.isPresent()) {
+    //         // Reset odometry to the start of the trajectory
+            RobotContainer.swerveSubsystem.resetOdometry(RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition());
+    //     }
+    // }
 
     // Reset and start the timer when the autonomous period begins
     timer.restart();
     
-    RobotContainer.gameState = GameConstants.Auto;
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
