@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 import com.studica.frc.AHRS;
+
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
@@ -13,28 +16,37 @@ import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.GameConstants;
 import frc.robot.Constants.PoseEstimatorConstants;
@@ -77,8 +89,13 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.kBackRightDriveAbsoluteEncoderOffsetDegree, 
         DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    // private AHRS gyro = new AHRS(SPI.Port.kMXP);
     private AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
+    private TrajectoryConfig trajectoryConfig;
+    private PIDController xController;
+    private PIDController yController;
+    private ProfiledPIDController thetaController;
+    public HolonomicDriveController holonomicDriveController;
+    public final Timer timer = new Timer();
     
     public final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics, new Rotation2d(),
@@ -140,6 +157,20 @@ public class SwerveSubsystem extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
+        
+        trajectoryConfig = new TrajectoryConfig(
+                AutoConstants.kMaxSpeedMetersPerSecond,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                        .setKinematics(DriveConstants.kDriveKinematics);
+
+        // 3. Define PID controllers for tracking trajectory
+        xController = new PIDController(AutoConstants.kPXController, 0, 0);
+        yController = new PIDController(AutoConstants.kPYController, 0, 0);
+        thetaController = new ProfiledPIDController(
+                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        
+        holonomicDriveController = new HolonomicDriveController(xController, yController, thetaController);
     }
     // Assuming this is a method in your drive subsystem
     public Command followPathCommand(String pathName) {
@@ -182,6 +213,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void zeroHeading(){
+        RobotContainer.wantedAngle = -1;
         gyro.reset();
     }
 
@@ -253,11 +285,33 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         );
         
+        String tagLimelightName = Constants.LimelightConstants.tagName;
+        if (LimelightHelpers.getTargetCount(tagLimelightName) != 0 && RobotContainer.gameState == GameConstants.Robot) {
+            Pose3d targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(tagLimelightName);
+            Double targetYaw = targetPose3d.getRotation().getMeasureAngle().baseUnitMagnitude();
+            Double targetX = targetPose3d.getX();
+    
+            SmartDashboard.putNumber("target yaw", targetYaw);
+            SmartDashboard.putNumber("target x", targetX);
 
+            // lined up angle perfectly (turn off limelight)
+            // TODO: Move this number to constants file
+            Boolean alignedYaw = targetYaw <= 0.25;
+            Boolean alignedX = Math.abs(targetX) <= 0.02;
+            if (alignedX && alignedYaw){
+                // TODO: Replace with LEDs ready for game
+                LimelightHelpers.setLEDMode_ForceOff(Constants.LimelightConstants.gamePieceName);
+            } else {
+                // TODO: Replace with LEDs not game ready
+                LimelightHelpers.setLEDMode_ForceOn(Constants.LimelightConstants.gamePieceName);
+            }
+        } else {
+            // TODO: Replace with LEDs not game ready
+            LimelightHelpers.setLEDMode_ForceOn(Constants.LimelightConstants.gamePieceName);
+        }
        
-        String limelightName = "limelight-tags";
-        LimelightHelpers.SetRobotOrientation(limelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+        LimelightHelpers.SetRobotOrientation(tagLimelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(tagLimelightName);
 
         boolean doRejectUpdate = false;
 
@@ -265,20 +319,22 @@ public class SwerveSubsystem extends SubsystemBase {
         {
             doRejectUpdate = true;
         }
-        if (mt2.tagCount == 0)
-        {
-            doRejectUpdate = true;
-        }
-        if (!doRejectUpdate)
-        {
-            if (RobotContainer.gameState == GameConstants.Robot) {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
-            } else {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        if (mt2 != null) {
+            if (mt2.tagCount == 0)
+            {
+                doRejectUpdate = true;
             }
-            poseEstimator.addVisionMeasurement(
-                mt2.pose,
-                mt2.timestampSeconds);
+            if (!doRejectUpdate)
+            {
+                if (RobotContainer.gameState == GameConstants.Robot) {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
+                } else {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+                }
+                poseEstimator.addVisionMeasurement(
+                    mt2.pose,
+                    mt2.timestampSeconds);
+            }
         }
     
         posePublisher.set(poseEstimator.getEstimatedPosition());
@@ -302,5 +358,39 @@ public class SwerveSubsystem extends SubsystemBase {
     public void setModuleStatesFromSpeeds(ChassisSpeeds speeds){
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
         setModuleStates(moduleStates);
+    }
+
+    public Trajectory getNearestTagTrajectory() {
+        // 2. Generate trajectory
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition(),
+            List.of(),
+            Constants.RobotPositions.redCenterSafe,
+            trajectoryConfig);
+        return trajectory;
+    }
+
+    public Command goToNearestTagCommand() {
+        System.out.println("GOING TO NEAREST TAG");
+        // 2. Generate trajectory
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition(),
+            List.of(),
+            Constants.RobotPositions.redCenterSafe,
+            trajectoryConfig);
+
+        // 4. Construct command to follow trajectory
+        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+                trajectory,
+                this::getPose,
+                DriveConstants.kDriveKinematics,
+                xController,
+                yController,
+                thetaController,
+                this::setModuleStates,
+                this);
+
+        // 5. Add some init and wrap-up, and return everything
+        return swerveControllerCommand;
     }
 }
