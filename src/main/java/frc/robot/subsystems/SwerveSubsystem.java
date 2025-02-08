@@ -296,7 +296,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // lined up angle perfectly (turn off limelight)
             // TODO: Move this number to constants file
-            Boolean alignedYaw = targetYaw <= 0.25 || (targetYaw >= 119.75 && targetYaw <= 120.25);
+            Boolean alignedYaw = targetYaw <= 0.25 || (targetYaw >= 59.75 && targetYaw <= 60.25);
             Boolean alignedX = Math.abs(targetX) <= 0.02;
             if (alignedX && alignedYaw){
                 // TODO: Replace with LEDs ready for game
