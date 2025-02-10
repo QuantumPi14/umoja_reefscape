@@ -413,4 +413,63 @@ public class SwerveSubsystem extends SubsystemBase {
         allPoints.add(Constants.redProcessorPosition);
         allPointsPublisher.set(allPoints.toArray(new Pose2d[0]));
     }
+
+    public Pose2d nearestPoint(boolean isProcessor, boolean hasCoral) {
+        
+         // default from center reef starting line
+        Pose2d nearestPoint = Constants.RobotPositions.blueReefBackCenter21;
+
+        boolean isBlue = true;
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            if (alliance.get() == DriverStation.Alliance.Red) {
+                isBlue = false;
+                nearestPoint = Constants.RobotPositions.redReefBackCenter10;
+            }
+        }
+
+        if (isProcessor) {
+            if (isBlue) {
+                return Constants.blueProcessorPosition;
+            } else {
+                return Constants.redProcessorPosition;
+            }
+        }
+
+        double nearestDistanceSoFar = Double.POSITIVE_INFINITY;
+
+        if (hasCoral) {
+            Pose2d[] pointsToCheck;
+            if (isBlue) {
+                pointsToCheck = Constants.blueReefPositions;
+            } else {
+                pointsToCheck = Constants.redReefPositions;
+            }
+            
+            for (Pose2d reefPoint: pointsToCheck) {
+                double currDistance = poseEstimator.getEstimatedPosition().getTranslation().getDistance(reefPoint.getTranslation());
+                if (currDistance <= nearestDistanceSoFar) {
+                    nearestDistanceSoFar = currDistance;
+                    nearestPoint = reefPoint;
+                }
+            }
+        } else {
+            Pose2d[] pointsToCheck;
+            if (isBlue) {
+                pointsToCheck = Constants.bluePickUpPositions;
+            } else {
+                pointsToCheck = Constants.redPickUpPositions;
+            }
+            
+            for (Pose2d pickUpPoints: pointsToCheck) {
+                double currDistance = poseEstimator.getEstimatedPosition().getTranslation().getDistance(pickUpPoints.getTranslation());
+                if (currDistance <= nearestDistanceSoFar) {
+                    nearestDistanceSoFar = currDistance;
+                    nearestPoint = pickUpPoints;
+                }
+            }
+        }
+        
+        return nearestPoint;
+    }
 }
