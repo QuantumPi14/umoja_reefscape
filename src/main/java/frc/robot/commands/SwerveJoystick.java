@@ -126,7 +126,7 @@ public class SwerveJoystick extends Command {
       Boolean aButtonPressed = j.getRawButton(OIConstants.A);
       if (aButtonPressed) {
         if (RobotContainer.currentTrajectory == null) {
-            RobotContainer.currentTrajectory = swerveSubsystem.getNearestTagTrajectory();
+            RobotContainer.currentTrajectory = swerveSubsystem.getNearestTagTrajectory(false, true);
         }
         // double curTime = swerveSubsystem.timer.get();
         // var desiredState = RobotContainer.currentTrajectory.sample(curTime);

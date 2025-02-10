@@ -361,38 +361,14 @@ public class SwerveSubsystem extends SubsystemBase {
         setModuleStates(moduleStates);
     }
 
-    public Trajectory getNearestTagTrajectory() {
-        // 2. Generate trajectory
+    public Trajectory getNearestTagTrajectory(boolean isProcessor, boolean hasCoral) {
+        Pose2d nearestPoint = nearestPoint(isProcessor, hasCoral);
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition(),
             List.of(),
-            Constants.RobotPositions.redCenterSafe,
+            nearestPoint,
             trajectoryConfig);
         return trajectory;
-    }
-
-    public Command goToNearestTagCommand() {
-        System.out.println("GOING TO NEAREST TAG");
-        // 2. Generate trajectory
-        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-            RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition(),
-            List.of(),
-            Constants.RobotPositions.redCenterSafe,
-            trajectoryConfig);
-
-        // 4. Construct command to follow trajectory
-        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-                trajectory,
-                this::getPose,
-                DriveConstants.kDriveKinematics,
-                xController,
-                yController,
-                thetaController,
-                this::setModuleStates,
-                this);
-
-        // 5. Add some init and wrap-up, and return everything
-        return swerveControllerCommand;
     }
 
     public void publishRobotPositions() {
