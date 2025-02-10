@@ -256,6 +256,7 @@ public final class Constants {
         public static final Color[] uColors = {uRed, uDarkOrange, uGreen, uOrange};
     }
 
+    
     public static final class AprilTagPositions {
         // all in m, 0 is left
         public static final Pose2d redPickupLeft1 = new Pose2d(16.697198, 0.65532, new Rotation2d(126));
@@ -266,7 +267,7 @@ public final class Constants {
         public static final Pose2d redReefRight8 = new Pose2d(13.474446, 4.745482, new Rotation2d(30));
         public static final Pose2d redReefBackRight9 = new Pose2d(12.643358, 4.745482, new Rotation2d(120));
         public static final Pose2d redReefBackCenter10 = new Pose2d(12.227305999999999, 4.0259, new Rotation2d(180));
-        public static final Pose2d redReefBackLLeft11 = new Pose2d(12.643358, 3.3063179999999996, new Rotation2d(240));
+        public static final Pose2d redReefBackLeft11 = new Pose2d(12.643358, 3.3063179999999996, new Rotation2d(240));
         public static final Pose2d bluePickupRight12 = new Pose2d(0.851154, 0.65532, new Rotation2d(54));
         public static final Pose2d bluePickupLeft13 = new Pose2d(0.851154, 7.3964799999999995, new Rotation2d(306));
         public static final Pose2d blueProcessor16 = new Pose2d(5.9875419999999995, -0.0038099999999999996, new Rotation2d(90));
@@ -280,7 +281,7 @@ public final class Constants {
 
     public static final class Measurements {
         // all in m
-        public static final double robotCenterToFront = 0.7;
+        public static final double robotCenterToFront = .43815;
         public static final double robotSideOffset = 0;
     }
 
@@ -292,21 +293,59 @@ public final class Constants {
         //y_{17}.x-r_{l}\cdot\cos\left(60\right)+r_{w}\sin\left(60\right),
         //y_{17}.y-r_{l}\cdot\sin\left(60\right)-r_{w}\cdot\cos\left(60\right)
         public static final Pose2d redPickupLeft1 = new Pose2d(AprilTagPositions.redPickupLeft1.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(54))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), 
-        AprilTagPositions.redPickupLeft1.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54)) - Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(306));
+        AprilTagPositions.redPickupLeft1.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54)) - Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(Units.degreesToRadians(306)));
 
         public static final Pose2d redPickupRight2 = new Pose2d(AprilTagPositions.redPickupRight2.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(54)) + Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), 
-        AprilTagPositions.redPickupRight2.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(54));
+        AprilTagPositions.redPickupRight2.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(Units.degreesToRadians(54)));
 
-        public static final Pose2d redProcessor3 = new Pose2d(AprilTagPositions.redProcessor3.getX()+Measurements.robotSideOffset, AprilTagPositions.redProcessor3.getY()-Measurements.robotCenterToFront, new Rotation2d(90));
+        public static final Pose2d redProcessor3 = new Pose2d(AprilTagPositions.redProcessor3.getX()+Measurements.robotSideOffset, AprilTagPositions.redProcessor3.getY()-Measurements.robotCenterToFront, new Rotation2d(Units.degreesToRadians(90)));
 
         public static final Pose2d redReefLeft6 = new Pose2d(AprilTagPositions.redReefLeft6.getX()+Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), 
-        AprilTagPositions.redReefLeft6.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(150));
+        AprilTagPositions.redReefLeft6.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(120)));
 
-        public static final Pose2d redReefCenter7 = new Pose2d(AprilTagPositions.redReefCenter7.getX()+Measurements.robotCenterToFront, AprilTagPositions.redReefCenter7.getY()+Measurements.robotSideOffset, new Rotation2d(180));
+        public static final Pose2d redReefCenter7 = new Pose2d(AprilTagPositions.redReefCenter7.getX()+Measurements.robotCenterToFront, AprilTagPositions.redReefCenter7.getY()+Measurements.robotSideOffset, new Rotation2d(Units.degreesToRadians(180)));
+
+        public static final Pose2d redReefRight8 = new Pose2d(AprilTagPositions.redReefRight8.getX()+Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), 
+        AprilTagPositions.redReefRight8.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.cos(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(240)));
+
+        public static final Pose2d redReefBackRight9 = new Pose2d(AprilTagPositions.redReefBackRight9.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)),
+        AprilTagPositions.redReefBackRight9.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(300)));
+
+        public static final Pose2d redReefBackCenter10 = new Pose2d(AprilTagPositions.redReefBackCenter10.getX()-Measurements.robotCenterToFront, AprilTagPositions.redReefBackCenter10.getY()-Measurements.robotSideOffset, new Rotation2d(Units.degreesToRadians(0)));
+
+        public static final Pose2d redReefBackLeft11 = new Pose2d(AprilTagPositions.redReefBackLeft11.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), 
+        AprilTagPositions.redReefBackLeft11.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(60)));
+
+        public static final Pose2d bluePickupRight12 = new Pose2d(AprilTagPositions.bluePickupRight12.getX()+Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(54))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)),
+        AprilTagPositions.bluePickupRight12.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(Units.degreesToRadians(234)));
+
+        public static final Pose2d bluePickupLeft13 = new Pose2d(AprilTagPositions.bluePickupLeft13.getX()+Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(54))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)),
+        AprilTagPositions.bluePickupLeft13.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54)) + Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(Units.degreesToRadians(126)));
+
+        public static final Pose2d blueProcessor16 = new Pose2d(AprilTagPositions.blueProcessor16.getX()-Measurements.robotSideOffset, AprilTagPositions.blueProcessor16.getY()+Measurements.robotCenterToFront, new Rotation2d(Units.degreesToRadians(270)));
 
         public static final Pose2d blueReefRight17 = new Pose2d(AprilTagPositions.blueReefRight17.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), 
-        AprilTagPositions.blueReefRight17.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.cos(Units.degreesToRadians(60)), new Rotation2d(210));
+        AprilTagPositions.blueReefRight17.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.cos(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(60)));
 
-        // public static final Pose2d blueCenter = new Pose2d(AprilTagPositions.blueReefBackCenter21.getX()-
+        public static final Pose2d blueReefCenter18 = new Pose2d(AprilTagPositions.blueReefCenter18.getX()-Measurements.robotCenterToFront, AprilTagPositions.blueReefCenter18.getY()-Measurements.robotSideOffset, new Rotation2d(Units.degreesToRadians(0)));
+
+        public static final Pose2d blueReefLeft19 = new Pose2d(AprilTagPositions.blueReefLeft19.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), 
+        AprilTagPositions.blueReefLeft19.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(300)));
+
+        public static final Pose2d blueReefBackLeft20 = new Pose2d(AprilTagPositions.blueReefBackLeft20.getX()+Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), 
+        AprilTagPositions.blueReefBackLeft20.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(240)));
+
+        public static final Pose2d blueReefBackCenter21 = new Pose2d(AprilTagPositions.blueReefBackCenter21.getX()+Measurements.robotCenterToFront, AprilTagPositions.blueReefBackCenter21.getY()+Measurements.robotSideOffset, new Rotation2d(Units.degreesToRadians(180)));
+
+        public static final Pose2d blueReefBackRight22 = new Pose2d(AprilTagPositions.blueReefBackRight22.getX()+Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)),
+        AprilTagPositions.blueReefBackRight22.getY()-Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(60))+Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(60)), new Rotation2d(Units.degreesToRadians(120)));        
+
     }
+
+    public static final Pose2d[] bluePickUpPositions = { RobotPositions.bluePickupRight12, RobotPositions.bluePickupLeft13};
+    public static final Pose2d[] blueReefPositions = { RobotPositions.blueReefRight17, RobotPositions.blueReefCenter18, RobotPositions.blueReefLeft19, RobotPositions.blueReefBackLeft20, RobotPositions.blueReefBackCenter21, RobotPositions.blueReefBackRight22};
+    public static final Pose2d blueProcessorPosition = RobotPositions.blueProcessor16;
+    public static final Pose2d[] redPickUpPositions = { RobotPositions.redPickupLeft1, RobotPositions.redPickupRight2};
+    public static final Pose2d[] redReefPositions = { RobotPositions.redReefLeft6, RobotPositions.redReefCenter7, RobotPositions.redReefRight8, RobotPositions.redReefBackRight9, RobotPositions.redReefBackCenter10, RobotPositions.redReefBackLeft11};
+    public static final Pose2d redProcessorPosition = RobotPositions.redProcessor3;
 }

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.studica.frc.AHRS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -253,6 +254,8 @@ public class SwerveSubsystem extends SubsystemBase {
     StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("MyPose", Pose2d.struct).publish();
     StructArrayPublisher<SwerveModuleState> swerveStatePublisher = NetworkTableInstance.getDefault()
 .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+    StructArrayPublisher<Pose2d> allPointsPublisher = NetworkTableInstance.getDefault()
+.getStructArrayTopic("AllPosesArray", Pose2d.struct).publish();
 
     @Override
     public void periodic() {
@@ -326,11 +329,7 @@ public class SwerveSubsystem extends SubsystemBase {
             }
             if (!doRejectUpdate)
             {
-                if (RobotContainer.gameState == GameConstants.Robot) {
-                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
-                } else {
-                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-                }
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
                 poseEstimator.addVisionMeasurement(
                     mt2.pose,
                     mt2.timestampSeconds);
@@ -338,6 +337,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     
         posePublisher.set(poseEstimator.getEstimatedPosition());
+        publishRobotPositions();
     }
 
     public void stopModules() {
@@ -392,5 +392,25 @@ public class SwerveSubsystem extends SubsystemBase {
 
         // 5. Add some init and wrap-up, and return everything
         return swerveControllerCommand;
+    }
+
+    public void publishRobotPositions() {
+        ArrayList<Pose2d> allPoints = new ArrayList<>();
+        for (Pose2d point: Constants.bluePickUpPositions) {
+            allPoints.add(point);
+        }
+        for (Pose2d point: Constants.blueReefPositions) {
+            allPoints.add(point);
+        }
+        allPoints.add(Constants.blueProcessorPosition);
+        
+        for (Pose2d point: Constants.redPickUpPositions) {
+            allPoints.add(point);
+        }
+        for (Pose2d point: Constants.redReefPositions) {
+            allPoints.add(point);
+        }
+        allPoints.add(Constants.redProcessorPosition);
+        allPointsPublisher.set(allPoints.toArray(new Pose2d[0]));
     }
 }
