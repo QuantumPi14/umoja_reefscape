@@ -281,17 +281,19 @@ public final class Constants {
 
     public static final class Measurements {
         // all in m
-        public static final double robotCenterToFront = .43815;
+        // robot l/w 28.5 by 28.5 inches
+        // bumper width ~= 3 inches
+        // TODO: Need to add potential intake front distance
+        public static final double robotCenterToFront = .43815; // robot length/2 + bumper width = 14.25 + 3 = 17.25 inches
         public static final double robotSideOffset = 0;
+        public static final double branchOffset = 0.1651; // 6.5 inches
+        public static final double coralStationDivotOffset = 0.2032; // 8 inches
     }
-
-    // public static final double degreesToRadians = 
 
     public static final class RobotPositions {
         public static final Pose2d redCenter = new Pose2d(11.62, 4.0259, new Rotation2d(0));
         public static final Pose2d redCenterSafe = new Pose2d(11.35, 4.0259, new Rotation2d(0));
-        //y_{17}.x-r_{l}\cdot\cos\left(60\right)+r_{w}\sin\left(60\right),
-        //y_{17}.y-r_{l}\cdot\sin\left(60\right)-r_{w}\cdot\cos\left(60\right)
+        
         public static final Pose2d redPickupLeft1 = new Pose2d(AprilTagPositions.redPickupLeft1.getX()-Measurements.robotCenterToFront*Math.cos(Units.degreesToRadians(54))-Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), 
         AprilTagPositions.redPickupLeft1.getY()+Measurements.robotCenterToFront*Math.sin(Units.degreesToRadians(54)) - Measurements.robotSideOffset*Math.sin(Units.degreesToRadians(54)), new Rotation2d(Units.degreesToRadians(306)));
 

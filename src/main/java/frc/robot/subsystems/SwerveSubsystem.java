@@ -24,6 +24,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -398,33 +399,36 @@ public class SwerveSubsystem extends SubsystemBase {
         ArrayList<Pose2d> allPoints = new ArrayList<>();
         for (Pose2d point: Constants.bluePickUpPositions) {
             allPoints.add(point);
+            allPoints.add(offsetPoint(point, 3*Constants.Measurements.coralStationDivotOffset));
+            allPoints.add(offsetPoint(point, -3*Constants.Measurements.coralStationDivotOffset));
         }
         for (Pose2d point: Constants.blueReefPositions) {
             allPoints.add(point);
+            allPoints.add(offsetPoint(point, Constants.Measurements.branchOffset));
+            allPoints.add(offsetPoint(point, -Constants.Measurements.branchOffset));
         }
         allPoints.add(Constants.blueProcessorPosition);
         
         for (Pose2d point: Constants.redPickUpPositions) {
             allPoints.add(point);
+            allPoints.add(offsetPoint(point, 3*Constants.Measurements.coralStationDivotOffset));
+            allPoints.add(offsetPoint(point, -3*Constants.Measurements.coralStationDivotOffset));
         }
         for (Pose2d point: Constants.redReefPositions) {
             allPoints.add(point);
+            allPoints.add(offsetPoint(point, Constants.Measurements.branchOffset));
+            allPoints.add(offsetPoint(point, -Constants.Measurements.branchOffset));
         }
         allPoints.add(Constants.redProcessorPosition);
         allPointsPublisher.set(allPoints.toArray(new Pose2d[0]));
     }
 
     public Pose2d nearestPoint(boolean isProcessor, boolean hasCoral) {
-        
-         // default from center reef starting line
-        Pose2d nearestPoint = Constants.RobotPositions.blueReefBackCenter21;
-
         boolean isBlue = true;
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Red) {
                 isBlue = false;
-                nearestPoint = Constants.RobotPositions.redReefBackCenter10;
             }
         }
 
@@ -436,40 +440,26 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         }
 
-        double nearestDistanceSoFar = Double.POSITIVE_INFINITY;
-
+        List<Pose2d> pointsToCheck;
         if (hasCoral) {
-            Pose2d[] pointsToCheck;
             if (isBlue) {
-                pointsToCheck = Constants.blueReefPositions;
+                pointsToCheck = List.of(Constants.blueReefPositions);
             } else {
-                pointsToCheck = Constants.redReefPositions;
-            }
-            
-            for (Pose2d reefPoint: pointsToCheck) {
-                double currDistance = poseEstimator.getEstimatedPosition().getTranslation().getDistance(reefPoint.getTranslation());
-                if (currDistance <= nearestDistanceSoFar) {
-                    nearestDistanceSoFar = currDistance;
-                    nearestPoint = reefPoint;
-                }
+                pointsToCheck = List.of(Constants.redReefPositions);
             }
         } else {
-            Pose2d[] pointsToCheck;
             if (isBlue) {
-                pointsToCheck = Constants.bluePickUpPositions;
+                pointsToCheck = List.of(Constants.bluePickUpPositions);
             } else {
-                pointsToCheck = Constants.redPickUpPositions;
+                pointsToCheck = List.of(Constants.redPickUpPositions);
             }
             
-            for (Pose2d pickUpPoints: pointsToCheck) {
-                double currDistance = poseEstimator.getEstimatedPosition().getTranslation().getDistance(pickUpPoints.getTranslation());
-                if (currDistance <= nearestDistanceSoFar) {
-                    nearestDistanceSoFar = currDistance;
-                    nearestPoint = pickUpPoints;
-                }
-            }
         }
-        
-        return nearestPoint;
+        return poseEstimator.getEstimatedPosition().nearest(pointsToCheck);
+    }
+
+    public Pose2d offsetPoint(Pose2d pose, double offset) {
+        Transform2d transform = new Transform2d(0, offset, new Rotation2d(0));
+        return pose.transformBy(transform);
     }
 }
