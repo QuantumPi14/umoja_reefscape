@@ -289,9 +289,10 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         );
         
-        String tagLimelightName = Constants.LimelightConstants.tagName;
-        if (LimelightHelpers.getTargetCount(tagLimelightName) != 0 && RobotContainer.gameState == GameConstants.Robot) {
-            Pose3d targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(tagLimelightName);
+        String tagLeftLimelightName = Constants.LimelightConstants.tagName;
+        String tagRightLimelightName = Constants.LimelightConstants.gamePieceName;
+        if (LimelightHelpers.getTargetCount(tagLeftLimelightName) != 0 && RobotContainer.gameState == GameConstants.Robot) {
+            Pose3d targetPose3d = LimelightHelpers.getTargetPose3d_RobotSpace(tagLeftLimelightName);
             Double targetYaw = targetPose3d.getRotation().getMeasureAngle().baseUnitMagnitude();
             Double targetX = targetPose3d.getX();
     
@@ -304,18 +305,19 @@ public class SwerveSubsystem extends SubsystemBase {
             Boolean alignedX = Math.abs(targetX) <= 0.02;
             if (alignedX && alignedYaw){
                 // TODO: Replace with LEDs ready for game
-                LimelightHelpers.setLEDMode_ForceOff(Constants.LimelightConstants.gamePieceName);
+                LimelightHelpers.setLEDMode_ForceOff(tagRightLimelightName);
             } else {
                 // TODO: Replace with LEDs not game ready
-                LimelightHelpers.setLEDMode_ForceOn(Constants.LimelightConstants.gamePieceName);
+                LimelightHelpers.setLEDMode_ForceOn(tagRightLimelightName);
             }
         } else {
             // TODO: Replace with LEDs not game ready
-            LimelightHelpers.setLEDMode_ForceOn(Constants.LimelightConstants.gamePieceName);
+            LimelightHelpers.setLEDMode_ForceOn(tagRightLimelightName);
         }
        
-        LimelightHelpers.SetRobotOrientation(tagLimelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(tagLimelightName);
+        LimelightHelpers.SetRobotOrientation(tagLeftLimelightName, poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate leftMT2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(tagLeftLimelightName);
+        LimelightHelpers.PoseEstimate rightMT2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(tagRightLimelightName);
 
         boolean doRejectUpdate = false;
 
@@ -323,17 +325,34 @@ public class SwerveSubsystem extends SubsystemBase {
         {
             doRejectUpdate = true;
         }
-        if (mt2 != null) {
-            if (mt2.tagCount == 0)
+        double visionTrustValue = 0.1;
+        if (RobotContainer.gameState == GameConstants.Robot) {
+            visionTrustValue = 0;
+        }
+        if (leftMT2 != null) {
+            if (leftMT2.tagCount == 0)
             {
                 doRejectUpdate = true;
             }
             if (!doRejectUpdate)
             {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0,0,9999999));
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(visionTrustValue,visionTrustValue,9999999));
                 poseEstimator.addVisionMeasurement(
-                    mt2.pose,
-                    mt2.timestampSeconds);
+                    leftMT2.pose,
+                    leftMT2.timestampSeconds);
+            }
+        }
+        if (rightMT2 != null) {
+            if (rightMT2.tagCount == 0)
+            {
+                doRejectUpdate = true;
+            }
+            if (!doRejectUpdate)
+            {
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(visionTrustValue,visionTrustValue,9999999));
+                poseEstimator.addVisionMeasurement(
+                    rightMT2.pose,
+                    rightMT2.timestampSeconds);
             }
         }
     
