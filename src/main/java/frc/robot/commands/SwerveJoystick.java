@@ -181,7 +181,7 @@ public class SwerveJoystick extends Command {
             RobotContainer.wantedAngle = swerveSubsystem.getHeading();
           }
 
-          if (joystickTurn == 0) {
+          if (RobotContainer.shouldAutoFixDrift && joystickTurn == 0) {
             // fix drift
             // if drifting
             if (RobotContainer.wantedAngle != swerveSubsystem.getHeading()) {
@@ -212,7 +212,7 @@ public class SwerveJoystick extends Command {
               }
             }
           } else {
-            RobotContainer.wantedAngle = swerveSubsystem.getHeading();
+            RobotContainer.wantedAngle = -1;
           }
 
           // 4. Construct desired chassis speeds
@@ -234,6 +234,11 @@ public class SwerveJoystick extends Command {
           // }
           if(j.getRawButton(OIConstants.BACK)){
             swerveSubsystem.zeroHeading();
+          }
+          if(j.getRawButton(OIConstants.START)){
+            RobotContainer.shouldAutoFixDrift = !RobotContainer.shouldAutoFixDrift;
+            System.out.println("AUTO FIX DRIFT TURNED " + Boolean.toString(RobotContainer.shouldAutoFixDrift));
+            SmartDashboard.putBoolean("Auto Fix Drift", RobotContainer.shouldAutoFixDrift);
           }
         }
       

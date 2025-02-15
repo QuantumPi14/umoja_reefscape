@@ -45,6 +45,7 @@ public class RobotContainer {
   public final static Joystick driverController = new Joystick(USB.DRIVER_CONTROLLER);
 
   public static double wantedAngle = -1;
+  public static Boolean shouldAutoFixDrift = true;
   public static int gameState = GameConstants.Robot;
   public static Trajectory currentTrajectory = null;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
