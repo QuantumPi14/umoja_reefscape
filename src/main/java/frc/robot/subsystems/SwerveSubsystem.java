@@ -397,6 +397,10 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         allPoints.add(Constants.redProcessorPosition);
         allPointsPublisher.set(allPoints.toArray(new Pose2d[0]));
+        // To-do: print points in terminal to put into choreo 
+        for (Pose2d point: allPoints){
+            System.out.print(point);
+        }
     }
 
     public Pose2d nearestPoint(boolean isProcessor, boolean hasCoral) {
@@ -437,5 +441,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d offsetPoint(Pose2d pose, double offset) {
         Transform2d transform = new Transform2d(0, offset, new Rotation2d(0));
         return pose.transformBy(transform);
+    }
+
+    public Command followPath(String pathplannerPathString) {
+        return followPathCommand(pathplannerPathString);
     }
 }

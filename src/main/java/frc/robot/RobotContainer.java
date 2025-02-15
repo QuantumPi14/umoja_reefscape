@@ -8,12 +8,15 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.GameConstants;
+import frc.robot.commands.Autos;
 import frc.robot.Constants.USB;
+
 
 import java.util.List;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import choreo.Choreo;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -44,6 +47,8 @@ public class RobotContainer {
   public final static SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   public final static Joystick driverController = new Joystick(USB.DRIVER_CONTROLLER);
 
+  public static final Autos auto = new Autos(swerveSubsystem);
+
   public static double wantedAngle = -1;
   public static Boolean shouldAutoFixDrift = true;
   public static int gameState = GameConstants.Robot;
@@ -72,6 +77,7 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
