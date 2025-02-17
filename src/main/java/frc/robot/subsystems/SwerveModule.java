@@ -122,7 +122,7 @@ public class SwerveModule {
             stop();
             return;
         }
-        state = SwerveModuleState.optimize(state, getState().angle);
+        state.optimize(getState().angle);
         driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         // driveMotor.set(drivePIDcontroller.calculate())
         // TODO: CHANGE THIS TO PID
