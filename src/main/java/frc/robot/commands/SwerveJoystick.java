@@ -177,10 +177,8 @@ public class SwerveJoystick extends Command {
           // set current angle
           if (RobotContainer.wantedAngle == -1) {
             // change hasCoral to be based on intake hasCoral
-            // or if we press a button
             boolean hasCoral = false;
-            boolean removeButtonPressed = j.getRawButton(OIConstants.Y);
-            RobotContainer.wantedAngle = swerveSubsystem.nearestPoint(hasCoral || removeButtonPressed, false).getRotation().getDegrees();
+            RobotContainer.wantedAngle = swerveSubsystem.nearestPoint(hasCoral, false).getRotation().getDegrees();
           }
 
           if (RobotContainer.shouldAutoFixDrift && joystickTurn == 0) {
