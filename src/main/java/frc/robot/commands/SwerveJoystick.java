@@ -65,8 +65,6 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      
-    
     if (j.getRawButton(OIConstants.Y)) {
       double KpDistance = -0.1f;  // Proportional control constant for distance
       double current_distance = Estimate_Distance();  // see the 'Case Study: Estimating Distance'
@@ -178,10 +176,18 @@ public class SwerveJoystick extends Command {
       
           // set current angle
           if (RobotContainer.wantedAngle == -1) {
-            RobotContainer.wantedAngle = swerveSubsystem.getHeading();
+            // change hasCoral to be based on intake hasCoral
+            // or if we press a button
+            boolean hasCoral = false;
+            boolean removeButtonPressed = j.getRawButton(OIConstants.Y);
+            RobotContainer.wantedAngle = swerveSubsystem.nearestPoint(hasCoral || removeButtonPressed, false).getRotation().getDegrees();
           }
 
           if (RobotContainer.shouldAutoFixDrift && joystickTurn == 0) {
+            // Fixes negative angles from Pose2d
+            if (RobotContainer.wantedAngle < 0) {
+              RobotContainer.wantedAngle += 360;
+            }
             // fix drift
             // if drifting
             if (RobotContainer.wantedAngle != swerveSubsystem.getHeading()) {

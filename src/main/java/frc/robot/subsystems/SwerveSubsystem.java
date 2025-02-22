@@ -380,8 +380,8 @@ public class SwerveSubsystem extends SubsystemBase {
         setModuleStates(moduleStates);
     }
 
-    public Trajectory getNearestTagTrajectory(boolean isProcessor, boolean hasCoral) {
-        Pose2d nearestPoint = nearestPoint(isProcessor, hasCoral);
+    public Trajectory getNearestTagTrajectory(boolean faceCoral, boolean faceProcessor) {
+        Pose2d nearestPoint = nearestPoint(faceCoral, faceProcessor);
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             RobotContainer.swerveSubsystem.poseEstimator.getEstimatedPosition(),
             List.of(),
@@ -422,7 +422,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public Pose2d nearestPoint(boolean isProcessor, boolean hasCoral) {
+    public Pose2d nearestPoint(boolean faceReef, boolean faceProcessor) {
         boolean isBlue = true;
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -431,7 +431,7 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         }
 
-        if (isProcessor) {
+        if (faceProcessor) {
             if (isBlue) {
                 return Constants.blueProcessorPosition;
             } else {
@@ -440,7 +440,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
 
         List<Pose2d> pointsToCheck;
-        if (hasCoral) {
+        if (faceReef) {
             if (isBlue) {
                 pointsToCheck = List.of(Constants.blueReefPositions);
             } else {
