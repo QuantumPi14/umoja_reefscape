@@ -216,7 +216,7 @@ public class SwerveJoystick extends Command {
               }
             }
           } else {
-            RobotContainer.wantedAngle = -1;
+            RobotContainer.wantedAngle = swerveSubsystem.nearestPoint(hasCoral, false).getRotation().getDegrees();;
           }
 
           // 4. Construct desired chassis speeds
